@@ -18,14 +18,33 @@
           <form id="form" class="border p-4 rounded">
             <div class="form-group mt-2 mb-2">
               <label for="expenseAmount" class="pb-2"
-                >Choose Expense Amount</label
+                >Expense Amount (Rs.)</label
               >
               <input
                 type="number"
                 class="form-control"
                 id="expenseAmount"
+                name="amount"
                 required
               />
+            </div>
+            <div class="form-group mt-2 mb-2">
+              <label for="category" class="pb-2">Choose Category</label>
+              <select class="form-control" id="category" name="category" required>
+                <option value="">Select Category</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Bills">Home Bills</option>
+                <option value="Cosmetic">Cosmetic</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Groceries">Groceries & Pet Supplement</option>
+                <option value="Home Appliances">Home Appliances & Furniture</option>
+                <option value="Eletronics Accessories">Mobile, Computers & Eletronics Accessories</option>
+                <option value="Payments">Payments & Bookings</option>
+                <option value="Stationary">Stationary</option>
+                <option value="Sports">Sports & Gym</option>
+                <option value="Other">Other</option>
+                <!-- Add more categories here -->
+              </select>
             </div>
             <div class="form-group mt-2 mb-2">
               <label for="description" class="pb-2">Choose Description</label>
@@ -33,40 +52,27 @@
                 type="text"
                 class="form-control"
                 id="description"
+                name="description"
                 required
               />
             </div>
-            <div class="form-group mt-2 mb-2">
-              <label for="category" class="pb-2">Choose Category</label>
-              <select class="form-control" id="category" required>
-                <option value="">Select Category</option>
-                <option value="food">Food</option>
-                <option value="travel">Travel</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="shopping">Shopping</option>
-                <option value="movie">Movie</option>
-                <!-- Add more categories here -->
-              </select>
-            </div>
-            <button
+            
+            <input
               type="submit"
               class="btn btn-success btn-block mt-3"
               id="submit"
+              value="Add Expense"
             >
-              Add Expense
-            </button>
+          </input>
           </form>
         </div>
       </div>
     </div>
-    <div class="container mt-3">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <ul class="list-group" id="listItem"></ul>
-        </div>
-      </div>
-    </div>
 
+    <div class="container mt-5" id="tableBody">
+      
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
