@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/sign_in_up.css" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <div class="display-block" id="one">
+      <!-- Outer container -->
+      <div class="container outer-container">
+        <!-- Log in page -->
+        <div class="inner-container1">
+          <h2 class="mb-5 text-center">Create an Account</h2>
+          <form action="" id="form1" method="POST">
+            <div class="input-group">
+              <span class="input-group-text">Email</span>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="username@email.com"
+                name="email"
+                id="loginEmail"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text"
+                ><img src="./images/lock.png" alt="lock" class="lock"
+              /></span>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="password"
+                name="password"
+                id="loginPassword"
+                required
+              />
+            </div>
+            <div class="mt-5">
+              <input
+                type="submit"
+                class="btn btn-success"
+                id="submit1"
+                value="Login"
+              />
+            </div>
+          </form>
+        </div>
+
+        <!-- Hidden page  2-->
+        <div class="hidden-two">
+          <div class="hidden-one-content">
+            <h1 class="mb-5 text-center">Welcome back SAVERS !</h1>
+            <p class="mb-5 text-center">
+              Wanna join the community of SAVERS !!
+            </p>
+            <button class="btn btn-primary" id="signup">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  next -->
+
+    <div class="display-none" id="two">
+      <div class="container outer-container">
+        <!-- Hidden one -->
+        <div class="hidden-one">
+          <div class="hidden-one-content">
+            <h1 class="mb-5 text-center">Welcome SAVERS !</h1>
+            <blockquote>
+              <h6>" Save money and money will save you 🙄 "</h6>
+            </blockquote>
+            <p class="mb-5 text-center">
+              Wanna check your expenses please login !!!!
+            </p>
+            <button class="btn btn-primary" id="login">Log in</button>
+          </div>
+        </div>
+
+        <!-- Sign up page -->
+        <div class="inner-container2">
+          <h2 class="mb-5 text-center">Create an Account</h2>
+          <form action="" id="form2" method="POST">
+            <div class="input-group">
+              <span class="input-group-text">Name</span>
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                id="username"
+                placeholder="username"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text">Email</span>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="username@email.com"
+                name="email"
+                id="email"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text"
+                ><img src="./images/lock.png" alt="lock" class="lock"
+              /></span>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="password"
+                name="password"
+                id="password"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text"
+                ><img src="./images/lock.png" alt="lock" class="lock"
+              /></span>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="confirm password"
+                name="confirm_password"
+                id="confirm_password"
+                required
+              />
+            </div>
+            <div class="mt-5">
+              <input
+                type="submit"
+                class="btn btn-success"
+                id="submit2"
+                value="Register"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../script/sign_in_up.js"></script>
+  </body>
+</html>
