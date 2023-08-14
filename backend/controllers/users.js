@@ -1,36 +1,59 @@
 const User = require("../models/users");
+const bcrypt = require("bcrypt");
 
+const saltRounds = 10;
+
+//Posting new users details to database
 exports.postUser = async (req, res, next) => {
-  let { username, email, password, confirm_password } = req.body;
-  username = username.trim().toLowerCase();
-  email = email.trim().toLowerCase();
+  const { username, email, password, confirm_password } = req.body;
+  const trimmedUsername = username.trim().toLowerCase();
+  const trimmedEmail = email.trim().toLowerCase();
+
   if (password === confirm_password) {
     try {
-      const isEmail = await User.findOne({ where: { email: email } });
-      if (isEmail) res.status(300).send({ message: "User already exists!!" });
-      else {
-        try {
-          await User.create({
-            username,
-            email,
-            password,
-          });
-          res.status(201).send({ message: "Successfully created" });
-        } catch (error) {
-          res.status(500).send({ message: "Internal server error" });
-        }
+      const isEmailUsed = await User.findOne({
+        where: { email: trimmedEmail },
+      });
+      if (isEmailUsed) {
+        return res.status(409).json({ message: "User already exists" });
+      }
+      const hashPassword = await bcrypt.hash(password, saltRounds);
+      try {
+        await User.create({
+          username: trimmedUsername,
+          email: trimmedEmail,
+          password: hashPassword,
+        });
+        return res.status(201).json({ message: "User created successfully" });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
       }
     } catch (error) {
-      res.status(500).send({ message: "Internal server error" });
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   } else {
-    res.status(301).send({
-      message: "Oops!! Entered password doesn't match with Confirm password",
-    });
+    return res.status(400).json({ message: "Passwords don't match" });
   }
 };
 
-exports.postCredential = (req, res, next) => {
+//Posting data to the database to check for login in purpose
+exports.postCredential = async (req, res, next) => {
   const { email, password } = req.body;
-  res.status(201).send({ email, password });
+  const trimmedEmail = email.trim().toLowerCase();
+  try {
+    const isEmail = await User.findOne({ where: { email: trimmedEmail } });
+    if (!isEmail) res.status(404).send({ message: "User doesn't exists!!" });
+    else {
+      const isMatch = await bcrypt.compare(password, isEmail.password);
+      if (isMatch) {
+        res.status(202).send({ message: "User login successfull" });
+      } else {
+        res.status(401).send({ message: "Unathorized User" });
+      }
+    }
+  } catch (error) {
+    res.status(500).send({ message: "Internal server error" });
+  }
 };

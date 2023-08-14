@@ -40,6 +40,7 @@ async function postUserData1(event) {
   };
   try {
     await axios.post("http://localhost:3000/user/logIn", details);
+    form1.reset();
   } catch (err) {
     console.log(err);
   }
@@ -55,6 +56,7 @@ async function postUserData2(event) {
   };
   try {
     await axios.post("http://localhost:3000/user/signUp", details);
+    form2.reset();
   } catch (err) {
     console.log(err);
   }
