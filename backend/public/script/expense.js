@@ -13,8 +13,11 @@ detailItems.addEventListener("click", handleButton);
 
 //Checking for previous expense details and displaying
 async function displayData() {
+  const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:3000/user-expense");
+    const response = await axios.get("http://localhost:3000/user-expense", {
+      headers: { Authorization: token },
+    });
     const data = response.data;
     detailItems.innerHTML = "";
     data.forEach((item) => {
@@ -30,6 +33,7 @@ displayData();
 
 //Posting new or updated expense detail
 async function postExpense(event) {
+  const token = localStorage.getItem("token");
   event.preventDefault();
   const details = {
     amount: expenseAmount.value,
@@ -40,7 +44,11 @@ async function postExpense(event) {
     if (form.dataset.mode === "edit") {
       editExpense(form.dataset.itemId, details);
     } else if (form.dataset.mode === "post" || form.dataset.mode === "") {
-      await axios.post("http://localhost:3000/user-expense", details);
+      await axios.post("http://localhost:3000/user-expense", details, {
+        headers: {
+          Authorization: token,
+        },
+      });
       detailItems.innerHTML = "";
       await displayData();
       form.reset();

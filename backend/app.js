@@ -7,6 +7,9 @@ const expenseRouter = require("./routes/expense");
 const userRouter = require("./routes/users");
 const app = express();
 
+const User = require("./models/users");
+const Expense = require("./models/expenses");
+
 app.use(cors());
 app.use(express.static("public"));
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -14,6 +17,9 @@ app.use(bodyparser.json());
 
 app.use(userRouter);
 app.use(expenseRouter);
+
+User.hasMany(Expense, { foreignKey: "userId" });
+Expense.belongsTo(User);
 
 sequelize
   .sync()

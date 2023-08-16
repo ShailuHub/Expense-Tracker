@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const path = require("path");
 const absolutePath = require("../utils/path");
 
@@ -44,13 +45,23 @@ exports.postUser = async (req, res, next) => {
 exports.postCredential = async (req, res, next) => {
   const { email, password } = req.body;
   const trimmedEmail = email.trim().toLowerCase();
+  console.log(process.env.secretKey);
   try {
     const isEmail = await User.findOne({ where: { email: trimmedEmail } });
     if (!isEmail) res.status(404).send({ message: "User doesn't exists!!" });
     else {
       const isMatch = await bcrypt.compare(password, isEmail.password);
       if (isMatch) {
-        res.send("success");
+        const createToken = await jwt.sign(
+          { id: isEmail.id, email: isEmail.email },
+          process.env.secretKey,
+          { expiresIn: "1h" }
+        );
+        res.status(201).json({
+          success: "success",
+          message: "User has suceesfully logged in",
+          token: createToken,
+        });
       } else {
         res.send("failed");
       }

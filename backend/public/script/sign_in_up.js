@@ -43,7 +43,9 @@ async function postUserData1(event) {
       "http://localhost:3000/user/logIn",
       details
     );
-    if (response.data == "success") {
+    await console.log(response.data);
+    localStorage.setItem("token", response.data.token);
+    if (response.data.success == "success") {
       window.location.href = "/expense/addexpense";
     } else {
       window.location.href = "/user/login";
