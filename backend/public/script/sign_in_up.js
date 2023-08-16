@@ -39,8 +39,16 @@ async function postUserData1(event) {
     password: loginPassword.value,
   };
   try {
-    await axios.post("http://localhost:3000/user/logIn", details);
-    form1.reset();
+    const response = await axios.post(
+      "http://localhost:3000/user/logIn",
+      details
+    );
+    if (response.data == "success") {
+      window.location.href = "/expense/addexpense";
+    } else {
+      window.location.href = "/user/login";
+      form1.reset();
+    }
   } catch (err) {
     console.log(err);
   }

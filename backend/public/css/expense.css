@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.form_row {
+  height: 100px;
+  align-items: center;
+  border-radius: 20px;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(8, 28, 133, 1) 0%,
+    rgba(9, 9, 121, 1) 41%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+.form_row span {
+  background: rgb(12, 5, 139);
+  color: white;
+}
+
+.form_row button {
+  background: rgb(12, 5, 139);
+  color: white;
+  transition: opacity 0.8s ease;
+}
+
+.form_row button:hover {
+  background: rgb(12, 5, 139);
+  color: white;
+  opacity: 0.8;
+}
+
+.input {
+  background-color: blue;
+}
+
+#table_content {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(8, 28, 133, 1) 0%,
+    rgba(9, 9, 121, 1) 41%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  border-radius: 20px;
+}

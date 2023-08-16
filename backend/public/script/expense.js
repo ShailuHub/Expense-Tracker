@@ -4,6 +4,7 @@ const expenseAmount = document.getElementById("expenseAmount");
 const description = document.getElementById("description");
 const category = document.getElementById("category");
 const detailItems = document.getElementById("tableBody");
+const submitButton = document.getElementById("submit");
 form.dataset.mode = "";
 
 //Applying event listener
@@ -35,7 +36,6 @@ async function postExpense(event) {
     description: description.value,
     category: category.value,
   };
-
   try {
     if (form.dataset.mode === "edit") {
       editExpense(form.dataset.itemId, details);
@@ -58,6 +58,7 @@ async function editExpense(itemId, details) {
       details
     );
     form.dataset.mode = "post";
+    submitButton.textContent = "Add Expense";
     detailItems.innerHTML = "";
     await displayData();
     form.reset();
@@ -81,7 +82,7 @@ async function deleteItem(itemId) {
 function handleButton(event) {
   event.preventDefault();
   const target = event.target;
-  const parentRow = target.closest(".row");
+  const parentRow = target.parentNode.parentNode;
 
   if (!parentRow) return;
 
@@ -105,6 +106,7 @@ async function editButtonClicked(itemId) {
     description.value = details.description;
     category.value = details.category;
     form.dataset.mode = "edit";
+    submitButton.textContent = "Update Expense";
     form.dataset.itemId = itemId;
   } catch (error) {
     console.log(error);
@@ -116,17 +118,16 @@ function getItemId(parentRow) {
 }
 
 function display(data) {
-  const listItem = document.createElement("div");
-  listItem.classList.add("row", "mb-3", "p-2", "rounded-2", "border");
+  const listItem = document.createElement("tr");
   listItem.dataset.id = data.id;
   listItem.innerHTML = `
-    <div class="col-3 text-center">${data.amount}</div>
-    <div class="col-3 text-center">${data.category}</div>
-    <div class="col-3 text-center">${data.description}</div>
-    <div class="col-3 d-flex gap-2 justify-content-center">
+    <td class="col-3 text-center">${data.amount}</</td>
+    <td class="col-3 text-center text-break">${data.category}</td>
+    <td class="col-3 text-center text-break">${data.description}</td>
+    <td class="col-3 text-center">
       <button class="btn btn-info">Edit</button>
       <button class="btn btn-danger">Delete</button>
-    </div>
+    </td>
   `;
   detailItems.appendChild(listItem);
 }

@@ -1,5 +1,7 @@
 const User = require("../models/users");
 const bcrypt = require("bcrypt");
+const path = require("path");
+const absolutePath = require("../utils/path");
 
 const saltRounds = 10;
 
@@ -48,12 +50,22 @@ exports.postCredential = async (req, res, next) => {
     else {
       const isMatch = await bcrypt.compare(password, isEmail.password);
       if (isMatch) {
-        res.status(202).send({ message: "User login successfull" });
+        res.send("success");
       } else {
-        res.status(401).send({ message: "Unathorized User" });
+        res.send("failed");
       }
     }
   } catch (error) {
     res.status(500).send({ message: "Internal server error" });
   }
+};
+
+exports.getExpensePage = (req, res, next) => {
+  res.sendFile(path.join(absolutePath, "public", "expense", "expense.html"));
+};
+
+exports.getLoginPage = (req, res, next) => {
+  res.sendFile(
+    path.join(absolutePath, "public", "sign-in-up", "sign_in_up.html")
+  );
 };
