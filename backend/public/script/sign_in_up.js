@@ -67,6 +67,7 @@ async function postUserData2(event) {
   try {
     await axios.post("http://localhost:3000/user/signUp", details);
     form2.reset();
+    window.location.href = "/user/login";
   } catch (err) {
     console.log(err);
   }
