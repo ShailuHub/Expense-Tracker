@@ -7,10 +7,9 @@ const detailItems = document.getElementById("tableBody");
 const submitButton = document.getElementById("submit");
 const premiumBtn = document.getElementById("premiumBtn");
 const premiumUser = document.getElementById("premium-user");
+const premiumText = document.getElementById("premium-text");
 form.dataset.mode = "";
-
-// At the beginning of your script
-preminum();
+let isFirstTime = true;
 
 //Applying event listener
 form.addEventListener("submit", postExpense);
@@ -24,7 +23,12 @@ async function displayData() {
     const response = await axios.get("http://localhost:3000/user-expense", {
       headers: { Authorization: token },
     });
-    const data = response.data;
+    const data = response.data.expenseDetail;
+    const isPremium = response.data.isPremium;
+
+    if (isPremium && isFirstTime) {
+      premium();
+    }
     detailItems.innerHTML = "";
     data.forEach((item) => {
       display(item);
@@ -136,30 +140,30 @@ async function buyPremium(event) {
   event.preventDefault();
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get(
+    const getResponse = await axios.get(
       "http://localhost:3000/purchase/membership",
       { headers: { Authorization: token } }
     );
     const options = {
-      key: response.data.key_id,
-      order_id: response.data.order.orderId,
-      handler: async function (response) {
-        await axios.post(
+      key: getResponse.data.key_id,
+      order_id: getResponse.data.order.orderId,
+      handler: async function (responseFromRazorPay) {
+        const postResponse = await axios.post(
           "http://localhost:3000/purchase/updateTransactionstatus",
           {
-            order_id: options.order_id,
-            payment_id: response.razorpay_payment_id,
+            order_id: responseFromRazorPay.razorpay_order_id,
+            payment_id: responseFromRazorPay.razorpay_payment_id,
           },
           { headers: { Authorization: token } }
         );
+        if (postResponse.data.success === "success") {
+          premium();
+        }
         alert("You are a Premium User Now");
-        localStorage.setItem("isPremium", "true");
-        preminum();
       },
     };
     const payToRajorPay = new Razorpay(options);
     payToRajorPay.open();
-
     payToRajorPay.on("payment.failed", (response) => {
       console.log(response);
       alert("Something went wrong");
@@ -169,20 +173,35 @@ async function buyPremium(event) {
   }
 }
 
-function preminum() {
-  const isPremium = localStorage.getItem("isPremium");
-  if (isPremium === "true") {
-    const item = document.createElement("h3");
-    item.innerHTML = "You are premium user now:";
-    premiumUser.appendChild(item);
-  }
+// function parseJwt(token) {
+//   const base64Url = token.split(".")[1];
+//   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+//   const jsonPayload = decodeURIComponent(
+//     window
+//       .atob(base64)
+//       .split("")
+//       .map(function (c) {
+//         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+//       })
+//       .join("")
+//   );
+
+//   return JSON.parse(jsonPayload);
+// }
+
+function premium() {
+  premiumBtn.style.display = "none";
+  const item = document.createElement("h3");
+  item.innerHTML = "You are premium user now:";
+  premiumUser.appendChild(item);
+  isFirstTime = false;
 }
 
 function display(data) {
   const listItem = document.createElement("tr");
   listItem.dataset.id = data.id;
   listItem.innerHTML = `
-    <td class="col-3 text-center">${data.amount}</</td>
+    <td class="col-3 text-center">${data.amount}</td>
     <td class="col-3 text-center text-break">${data.category}</td>
     <td class="col-3 text-center text-break">${data.description}</td>
     <td class="col-3 text-center">

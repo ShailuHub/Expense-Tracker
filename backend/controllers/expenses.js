@@ -1,10 +1,14 @@
 const Expense = require("../models/expenses");
+const User = require("../models/users");
 
 exports.getExpense = async (req, res, next) => {
   const userId = req.user.id;
   try {
     const expenseDetail = await Expense.findAll({ where: { userId: userId } });
-    res.send(expenseDetail);
+    const totalSum = await Expense.sum("amount", { where: { userId: userId } });
+    await User.update({ totalExpense: totalSum }, { where: { id: userId } });
+    req.user.totalExpense = totalSum;
+    res.send({ expenseDetail: expenseDetail, isPremium: req.user.isPremium });
   } catch (err) {
     console.log(err);
     res.status(500).send("Internal Server Error");

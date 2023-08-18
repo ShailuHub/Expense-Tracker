@@ -12,7 +12,7 @@ router.get(
 router.post(
   "/purchase/updateTransactionstatus",
   authenticateControllers.authenticate,
-  purchaseControllers.purchaseMemberShip
+  purchaseControllers.purchaseStatus
 );
 
 module.exports = router;

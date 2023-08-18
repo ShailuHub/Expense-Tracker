@@ -45,7 +45,6 @@ exports.postUser = async (req, res, next) => {
 exports.postCredential = async (req, res, next) => {
   const { email, password } = req.body;
   const trimmedEmail = email.trim().toLowerCase();
-  console.log(process.env.secretKey);
   try {
     const isEmail = await User.findOne({ where: { email: trimmedEmail } });
     if (!isEmail) res.status(404).send({ message: "User doesn't exists!!" });
@@ -53,7 +52,7 @@ exports.postCredential = async (req, res, next) => {
       const isMatch = await bcrypt.compare(password, isEmail.password);
       if (isMatch) {
         const createToken = await jwt.sign(
-          { id: isEmail.id, email: isEmail.email },
+          { id: isEmail.id, email: isEmail.email, isPremium: null },
           process.env.secretKey,
           { expiresIn: "1h" }
         );
