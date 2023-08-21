@@ -4,6 +4,12 @@ const expenseControllers = require("../controllers/expenses");
 const userAuthentication = require("../middleware/authenticate");
 
 router.get(
+  "/add-expense",
+  userAuthentication.authenticate,
+  expenseControllers.getExpensePage
+);
+
+router.get(
   "/user-expense",
   userAuthentication.authenticate,
   expenseControllers.getExpense

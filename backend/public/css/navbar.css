@@ -18,12 +18,21 @@ body {
     rgba(0, 212, 255, 1) 100%
   );
   color: white;
+  z-index: 100px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid white;
+  margin-top: 0;
 }
 .navbar-container {
   height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+}
+
+.navbar-btn {
+  margin-right: 15px;
 }
 
 .navbar-btn button {
@@ -41,11 +50,93 @@ body {
   display: flex;
   gap: 5px;
   margin-top: 10px;
+  margin-left: 15px;
 }
 
-.nav-menu {
+.toggle-btn,
+.cross-btn {
+  width: 40px;
+  height: 40px;
+  margin-top: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  position: relative;
 }
-.navbar-logo {
+.top,
+.bottom,
+.middle {
+  width: 65%;
+  height: 2px;
+  background-color: white;
+}
+
+.bottom-cross,
+.top-cross {
+  width: 60%;
+  height: 2px;
+  background-color: white;
+}
+
+.top {
+  transform: translateY(-5px);
+}
+
+.bottom {
+  transform: translateY(5px);
+}
+
+.top-cross {
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+.bottom-cross {
+  position: absolute;
+  transform: rotate(135deg);
+}
+.cross-btn {
+  display: none;
+}
+
+.toggle-btn {
+  display: none;
+}
+
+.toggle-menu {
+  display: none;
+}
+
+.toggle-menu {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(8, 28, 133, 1) 0%,
+    rgba(9, 9, 121, 1) 41%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  position: absolute;
+  top: 60.5px;
+  left: 0;
+  width: 100%;
+}
+
+.toggle-menu ul {
+  list-style: none;
+  font-size: 1.15rem;
+}
+
+.toggle-menu ul li {
+  list-style: none;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.toggle-menu ul a {
+  text-decoration: none;
+  color: white;
 }
 
 .nav-menu ul {
@@ -71,4 +162,29 @@ body {
 .nav-menu ul a:active {
   opacity: 0.8;
   background-color: red;
+}
+
+@media screen and (max-width: 992px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .toggle-btn {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .toggle-btn {
+    display: none;
+  }
+  .cross-btn {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .navbar-btn {
+    display: none;
+  }
 }

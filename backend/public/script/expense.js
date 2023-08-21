@@ -8,6 +8,8 @@ const submitButton = document.getElementById("submit");
 const premiumBtn = document.getElementById("premiumBtn");
 const premiumUser = document.getElementById("premium-user");
 const premiumText = document.getElementById("premium-text");
+
+// expenseContent.style.display = "none";
 form.dataset.mode = "";
 let isFirstTime = true;
 
@@ -201,11 +203,13 @@ function display(data) {
   const listItem = document.createElement("tr");
   listItem.dataset.id = data.id;
   listItem.innerHTML = `
-    <td class="col-3 text-center">${data.amount}</td>
-    <td class="col-3 text-center text-break">${data.category}</td>
-    <td class="col-3 text-center text-break">${data.description}</td>
-    <td class="col-3 text-center">
+    <td class="col-4 text-center">${data.category}</td>
+    <td class="col-4 text-center ">${data.description}</td>
+    <td class="col-2 text-center ">${data.amount}</td>
+    <td class="col-1 text-center">
       <button class="btn btn-info">Edit</button>
+    </td>
+    <td class="col-1 text-center">
       <button class="btn btn-danger">Delete</button>
     </td>
   `;

@@ -39,6 +39,68 @@
   background-color: blue;
 }
 
+@media screen and (max-width: 768px) {
+  .form_row {
+    padding: 30px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form_row > div {
+    display: flex;
+    justify-content: center;
+  }
+  #category {
+    width: 80%;
+  }
+
+  .form_row .input-group {
+    width: 80%;
+  }
+
+  .form_row .btn {
+    width: 80%;
+    background-color: blue;
+  }
+
+  .input-group span {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form_row {
+    padding: 30px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form_row > div {
+    display: flex;
+    justify-content: center;
+  }
+  #category {
+    width: 80%;
+  }
+
+  .form_row .input-group {
+    width: 80%;
+  }
+
+  .form_row .btn {
+    width: 80%;
+    background-color: blue;
+  }
+
+  .input-group span {
+    font-size: 14px;
+  }
+}
+
 #table_content {
   background: rgb(2, 0, 36);
   background: linear-gradient(

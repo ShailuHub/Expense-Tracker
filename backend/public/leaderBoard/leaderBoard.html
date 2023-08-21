@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/leaderBoard.css">
+    <link rel="stylesheet" href="../css/leaderBoard.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -13,47 +13,57 @@
     />
     <title>LeaderBoard</title>
   </head>
-  <body class="body">
-    <div class="container-fluid navbar-main-container">
-        <div class="container navbar-container ">
-            <div class="navbar-logo">
-              <h3 id="logo-img">&#8377</h3>
-              <h4 id="logo-text">Expense Tracker</h4>
-            </div>
-            <div class="nav-menu">
-              <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="../leaderBoard/leaderBoard.html" id="leaderBoard">Leader Board</a></li>
-                <li><a href="#">Premium</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-            <div class="navbar-btn">
-              <button class="btn btn-primary" id="premium-text">Premium User</button>
-              <button class="btn btn-primary">Log out</button>
-            </div>
+  <body>
+    <div class="container-flid navbar-main-container">
+      <div class="container-xl navbar-container">
+        
+        <div class="navbar-logo">
+          <div class="toggle-btn" id="toggle-btn">
+            <div class="top"></div>
+            <div class="middle"></div>
+            <div class="bottom"></div>
           </div>
+          <div class="cross-btn" id="cross-btn">
+              <div class="top-cross"></div>
+              <div class="bottom-cross"></div>
+          </div>
+          <h3 id="logo-img">&#8377</h3>
+          <h4 id="logo-text">Expense Tracker</h4>
         </div>
+        <div class="nav-menu" >
+          <ul>
+            <li><a href="#" id="expenseHome-lg">Home</a></li>
+            <li><a href="#" id="expenseLeaderBoard-lg">Leader Board</a></li>
+            <li><a href="#">Premium</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="toggle-menu" id="toggle-menu">
+          <ul>
+            <li><a href="#" id="expenseHome-lg">Home</a></li>
+            <li><a href="#" id="expenseLeaderBoard-sm">Leader Board</a></li>
+            <li><a href="#">Premium</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="navbar-btn">
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          <button class="btn btn-primary">Log out</button>
+        </div>
+      </div>
     </div>
     <div class="container" id="leaderBoard">
-        <div class="main">
-          <div class="main_content_text">
-            <h4>Leader Board</h4>
-          </div>
-          <div id="position">
-            <div class="main_content_list">
-              <div class="row">
-                <div class="col-2"></div>
-                <div class="col-6"></div>
-                <div class="col-4"></div>
-              </div>
-            </div>
-            
-          </div>
+      <div class="main">
+        <div class="main_content_text">
+          <h4>Leader Board</h4>
         </div>
+        <div id="position">
+          
+        </div>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="../script/leaderBoard.js"></script>
+    <script src="../script/leaderboard.js"></script>
     <script src="../script/navigation.js"></script>
   </body>
 </html>

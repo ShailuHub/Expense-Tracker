@@ -23,6 +23,7 @@ function handleSignup() {
   one.classList.add("display-none");
   two.classList.remove("display-none");
   two.classList.add("display-block");
+  history.pushState(null, null, "/user/signup");
 }
 
 function handlelogin() {
@@ -30,6 +31,7 @@ function handlelogin() {
   one.classList.add("display-block");
   two.classList.remove("display-block");
   two.classList.add("display-none");
+  history.pushState(null, null, "/user/login");
 }
 
 async function postUserData1(event) {
@@ -43,13 +45,11 @@ async function postUserData1(event) {
       "http://localhost:3000/user/logIn",
       details
     );
-    await console.log(response.data);
     localStorage.setItem("token", response.data.token);
     if (response.data.success == "success") {
       window.location.href = "/expense/addexpense";
     } else {
       window.location.href = "/user/login";
-      form1.reset();
     }
   } catch (err) {
     console.log(err);

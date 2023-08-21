@@ -1,5 +1,7 @@
 const Expense = require("../models/expenses");
 const User = require("../models/users");
+const absolutePath = require("../utils/path");
+const path = require("path");
 
 exports.getExpense = async (req, res, next) => {
   const userId = req.user.id;
@@ -82,5 +84,13 @@ exports.editExpense = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Internal Server Error");
+  }
+};
+
+exports.getExpensePage = (req, res, next) => {
+  if (req.user.isPremium) {
+    res.sendFile(path.join(absolutePath, "public", "expense", "expense.html"));
+  } else {
+    res.send("Hello");
   }
 };
