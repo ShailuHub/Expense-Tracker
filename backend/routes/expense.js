@@ -16,7 +16,7 @@ router.get(
 );
 router.get(
   "/user-expense/edit/:expenseId",
-
+  userAuthentication.authenticate,
   expenseControllers.getSingleExpense
 );
 router.post(
@@ -26,7 +26,12 @@ router.post(
 );
 router.delete(
   "/user-expense/delete/:expenseId",
+  userAuthentication.authenticate,
   expenseControllers.deleteExpense
 );
-router.patch("/user-expense/edit/:expenseId", expenseControllers.editExpense);
+router.patch(
+  "/user-expense/edit/:expenseId",
+  userAuthentication.authenticate,
+  expenseControllers.editExpense
+);
 module.exports = router;

@@ -72,10 +72,16 @@ async function postExpense(event) {
 
 //Editing and posting current expense detail
 async function editExpense(itemId, details) {
+  const token = localStorage.getItem("token");
   try {
     await axios.patch(
       `http://localhost:3000/user-expense/edit/${itemId}`,
-      details
+      details,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
     form.dataset.mode = "post";
     submitButton.textContent = "Add Expense";
@@ -89,8 +95,13 @@ async function editExpense(itemId, details) {
 
 //Deleting expense detail
 async function deleteItem(itemId) {
+  const token = localStorage.getItem("token");
   try {
-    await axios.delete(`http://localhost:3000/user-expense/delete/${itemId}`);
+    await axios.delete(`http://localhost:3000/user-expense/delete/${itemId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
     detailItems.innerHTML = "";
     await displayData();
   } catch (error) {
@@ -117,9 +128,15 @@ function handleButton(event) {
 
 //Setting the data in edit mode
 async function editButtonClicked(itemId) {
+  const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://localhost:3000/user-expense/edit/${itemId}`
+      `http://localhost:3000/user-expense/edit/${itemId}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
     const details = response.data;
     expenseAmount.value = details.amount;

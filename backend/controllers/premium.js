@@ -2,7 +2,6 @@ const absolutePath = require("../utils/path");
 const path = require("path");
 const User = require("../models/users");
 exports.getLeaderBoard = (req, res, next) => {
-  console.log(req.user);
   if (req.user.isPremium === true) {
     res.status(201).json({ success: "success", mesage: "User is premium" });
   } else {
