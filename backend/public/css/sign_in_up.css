@@ -102,7 +102,7 @@ body {
 
 @media screen and (max-width: 768px) {
   .inner-container1 {
-    height: 300.219px;
+    height: 400px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
   }
@@ -143,4 +143,10 @@ body {
     gap: 10px;
     width: 80%;
   }
+}
+
+#submit1,
+#submit2,
+#forgotPassword {
+  width: 100%;
 }

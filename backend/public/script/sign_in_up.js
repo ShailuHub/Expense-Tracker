@@ -12,11 +12,13 @@ const login = document.getElementById("login");
 const signup = document.getElementById("signup");
 const one = document.getElementById("one");
 const two = document.getElementById("two");
+const forgotPasswordBtn = document.getElementById("forgotPassword");
 
 form1.addEventListener("submit", postUserData1);
 form2.addEventListener("submit", postUserData2);
 signup.addEventListener("click", handleSignup);
 login.addEventListener("click", handlelogin);
+forgotPasswordBtn.addEventListener("click", handleForgotPassword);
 
 function handleSignup() {
   one.classList.remove("display-block");
@@ -32,6 +34,10 @@ function handlelogin() {
   two.classList.remove("display-block");
   two.classList.add("display-none");
   history.pushState(null, null, "/user/login");
+}
+
+function handleForgotPassword() {
+  window.location.href = "/password/forgotPassword";
 }
 
 async function postUserData1(event) {
