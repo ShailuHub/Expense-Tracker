@@ -9,8 +9,17 @@ async function postEmail(event) {
     email: email.value,
   };
   try {
-    await axios.post("http://localhost:3000/password/forgotPassword", detail);
-    console.log("posted");
+    const postResponse = await axios.post(
+      "http://localhost:3000/password/forgotPassword",
+      detail
+    );
+    localStorage.setItem("userId", postResponse.data.userId);
+    try {
+      await axios.get("http://localhost:3000/pop-up");
+      window.location.href = "/pop-up";
+    } catch (error) {
+      console.log(error);
+    }
   } catch (error) {
     console.log(error);
   }

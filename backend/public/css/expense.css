@@ -35,8 +35,10 @@
   opacity: 0.8;
 }
 
-.input {
+.input-group {
+  position: relative;
   background-color: blue;
+  z-index: 50;
 }
 
 @media screen and (max-width: 768px) {

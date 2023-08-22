@@ -8,5 +8,14 @@ router.get(
 );
 
 router.post("/password/forgotPassword", passwordControllers.postForgotPassword);
+router.get(
+  `/password/resetpassword/:userId`,
+  passwordControllers.getResetPasswordPage
+);
+
+router.post(
+  `/password/resetpassword/:userId`,
+  passwordControllers.postResetPassword
+);
 
 module.exports = router;

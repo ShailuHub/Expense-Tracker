@@ -8,11 +8,13 @@ const userRouter = require("./routes/users");
 const purchaseRouter = require("./routes/purchase");
 const preminumRouter = require("./routes/premium");
 const passwordRouter = require("./routes/password");
+const popUpRouter = require("./routes/pop-up");
 const app = express();
 
 const User = require("./models/users");
 const Expense = require("./models/expenses");
 const Order = require("./models/orders");
+const Password = require("./models/forgotPassword");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -24,12 +26,16 @@ app.use(expenseRouter);
 app.use(purchaseRouter);
 app.use(preminumRouter);
 app.use(passwordRouter);
+app.use(popUpRouter);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(Password);
+Password.belongsTo(User);
 
 sequelize
   .sync()

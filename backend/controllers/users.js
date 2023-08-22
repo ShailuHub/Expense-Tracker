@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 const absolutePath = require("../utils/path");
+const Password = require("../models/forgotPassword");
+const sequelize = require("../utils/database");
 
 const saltRounds = 10;
 
@@ -11,29 +13,44 @@ exports.postUser = async (req, res, next) => {
   const { username, email, password, confirm_password } = req.body;
   const trimmedUsername = username.trim().toLowerCase();
   const trimmedEmail = email.trim().toLowerCase();
+  const t = await sequelize.transaction();
 
   if (password === confirm_password) {
     try {
       const isEmailUsed = await User.findOne({
         where: { email: trimmedEmail },
+        transaction: t,
       });
       if (isEmailUsed) {
         return res.status(409).json({ message: "User already exists" });
       }
       const hashPassword = await bcrypt.hash(password, saltRounds);
       try {
-        await User.create({
-          username: trimmedUsername,
-          email: trimmedEmail,
-          password: hashPassword,
-        });
+        const user = await User.create(
+          {
+            username: trimmedUsername,
+            email: trimmedEmail,
+            password: hashPassword,
+          },
+          { transaction: t }
+        );
+
+        await Password.create(
+          {
+            userId: user.id,
+          },
+          { transaction: t }
+        );
+        await t.commit();
         return res.status(201).json({ message: "User created successfully" });
       } catch (error) {
         console.error(error);
+        await t.rollback();
         return res.status(500).json({ message: "Internal server error" });
       }
     } catch (error) {
       console.error(error);
+      await t.rollback();
       return res.status(500).json({ message: "Internal server error" });
     }
   } else {
