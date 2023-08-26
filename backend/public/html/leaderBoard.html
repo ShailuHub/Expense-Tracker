@@ -14,7 +14,7 @@
     <title>LeaderBoard</title>
   </head>
   <body>
-    <div class="container-flid navbar-main-container">
+    <div class="container-flid navbar-main-container bg-secondary">
       <div class="container-xl navbar-container">
         
         <div class="navbar-logo">
@@ -32,34 +32,31 @@
         </div>
         <div class="nav-menu" >
           <ul>
-            <li><a href="#" id="expenseHome-lg">Home</a></li>
+            <li><a href="#" id="expenseHome-lg" >Home</a></li>
             <li><a href="#" id="expenseLeaderBoard-lg">Leader Board</a></li>
-            <li><a href="#">Premium</a></li>
+            <li><a href="#" id="premiumFeatures-lg">Premium</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
         </div>
         <div class="toggle-menu" id="toggle-menu">
           <ul>
-            <li><a href="#" id="expenseHome-lg">Home</a></li>
+            <li><a href="#" id="expenseHome-sm">Home</a></li>
             <li><a href="#" id="expenseLeaderBoard-sm">Leader Board</a></li>
-            <li><a href="#">Premium</a></li>
+            <li><a href="#" id="premiumFeatures-sm">Premium</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
         </div>
         <div class="navbar-btn">
-          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-          <button class="btn btn-primary">Log out</button>
+          <button class="btn btn-danger" id="logOut">Log out</button>
         </div>
       </div>
     </div>
     <div class="container" id="leaderBoard">
-      <div class="main">
-        <div class="main_content_text">
+      <div class="main bg-secondary">
+        <div class="main_content_text bg-secondary">
           <h4>Leader Board</h4>
         </div>
-        <div id="position">
-          
-        </div>
+        <div id="position"></div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

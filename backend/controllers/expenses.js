@@ -4,17 +4,34 @@ const sequelize = require("../utils/database");
 const absolutePath = require("../utils/path");
 const path = require("path");
 
-exports.getExpense = async (req, res, next) => {
-  const userId = req.user.id;
+// Fetch expenses for pagination
+exports.getExpensesforPagination = async (req, res, next) => {
   try {
-    const expenseDetail = await Expense.findAll({ where: { userId: userId } });
-    res.send({ expenseDetail: expenseDetail, isPremium: req.user.isPremium });
+    const page = req.params.page;
+    const limit = 3;
+    const toSkipAfter = (page - 1) * limit;
+    const totalExpenses = await Expense.count({
+      where: { userId: req.user.id },
+    });
+    const totalPages = Math.ceil(totalExpenses / limit);
+    const expenses = await Expense.findAll({
+      where: { userId: req.user.id },
+      offset: toSkipAfter,
+      limit: limit,
+    });
+
+    res.json({
+      expenses: expenses,
+      totalPages: totalPages,
+      isPremium: req.user.isPremium,
+      currPage: page,
+    });
   } catch (err) {
     console.log(err);
-    res.status(500).send("Internal Server Error");
   }
 };
 
+// Create a new expense
 exports.postExpense = async (req, res, next) => {
   const userId = req.user.id;
   const t = await sequelize.transaction();
@@ -49,6 +66,7 @@ exports.postExpense = async (req, res, next) => {
   }
 };
 
+// Delete an expense
 exports.deleteExpense = async (req, res, next) => {
   const expenseId = req.params.expenseId;
   const t = await sequelize.transaction();
@@ -79,6 +97,7 @@ exports.deleteExpense = async (req, res, next) => {
   }
 };
 
+// Fetch a single expense
 exports.getSingleExpense = async (req, res, next) => {
   const expenseId = req.params.expenseId;
   try {
@@ -94,6 +113,7 @@ exports.getSingleExpense = async (req, res, next) => {
   }
 };
 
+// Edit an expense
 exports.editExpense = async (req, res, next) => {
   const expenseId = req.params.expenseId;
   const updatedAmount = req.body.amount;
@@ -132,10 +152,11 @@ exports.editExpense = async (req, res, next) => {
   }
 };
 
+// Serve the expense page if user is premium
 exports.getExpensePage = (req, res, next) => {
   if (req.user.isPremium) {
-    res.sendFile(path.join(absolutePath, "public", "expense", "expense.html"));
+    res.sendFile(path.join(absolutePath, "public", "html", "expense.html"));
   } else {
-    res.send("Hello");
+    res.status(401).send({ message: "Unauthorized" });
   }
 };

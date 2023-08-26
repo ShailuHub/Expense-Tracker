@@ -9,11 +9,11 @@ router.get(
   expenseControllers.getExpensePage
 );
 
-router.get(
-  "/user-expense",
-  userAuthentication.authenticate,
-  expenseControllers.getExpense
-);
+// router.get(
+//   "/user-expense",
+//   userAuthentication.authenticate,
+//   expenseControllers.getExpense
+// );
 router.get(
   "/user-expense/edit/:expenseId",
   userAuthentication.authenticate,
@@ -34,4 +34,11 @@ router.patch(
   userAuthentication.authenticate,
   expenseControllers.editExpense
 );
+
+router.get(
+  "/user-expense/:page",
+  userAuthentication.authenticate,
+  expenseControllers.getExpensesforPagination
+);
+
 module.exports = router;

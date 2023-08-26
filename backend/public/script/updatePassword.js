@@ -17,6 +17,9 @@ async function postResetPassword(event) {
       `http://localhost:3000/password/resetpassword/${userId}`,
       details
     );
+    if (response.data.success === "success") {
+      window.location.href = "/user/login";
+    }
     console.log(response);
   } catch (error) {
     console.log(error);

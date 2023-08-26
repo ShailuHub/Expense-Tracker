@@ -1,4 +1,4 @@
-//Targeting all element
+// Targeting all elements
 const form = document.getElementById("form");
 const expenseAmount = document.getElementById("expenseAmount");
 const description = document.getElementById("description");
@@ -8,42 +8,85 @@ const submitButton = document.getElementById("submit");
 const premiumBtn = document.getElementById("premiumBtn");
 const premiumUser = document.getElementById("premium-user");
 const premiumText = document.getElementById("premium-text");
+const pageBtn = document.getElementById("pagination-custom");
 
-// expenseContent.style.display = "none";
+// Initialize variables
 form.dataset.mode = "";
 let isFirstTime = true;
+let currPage = 1;
 
-//Applying event listener
+// Applying event listeners
 form.addEventListener("submit", postExpense);
 detailItems.addEventListener("click", handleButton);
 premiumBtn.addEventListener("click", buyPremium);
 
-//Checking for previous expense details and displaying
-async function displayData() {
+// Pagination function
+async function pagination(event) {
+  const page = event.target.textContent;
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:3000/user-expense", {
-      headers: { Authorization: token },
-    });
-    const data = response.data.expenseDetail;
-    const isPremium = response.data.isPremium;
+    const response = await axios.get(
+      `http://localhost:3000/user-expense/${page}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
+    const { expenses, totalPages, isPremium } = response.data;
 
     if (isPremium && isFirstTime) {
       premium();
     }
     detailItems.innerHTML = "";
-    data.forEach((item) => {
+    expenses.forEach((item) => {
       display(item);
     });
+    currPage = page; // Update current page
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Display expense data based on page
+async function displayData(page) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/user-expense/${page}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
+
+    const { expenses, totalPages, isPremium } = response.data;
+
+    if (isPremium && isFirstTime) {
+      premium();
+    }
+    detailItems.innerHTML = "";
+    expenses.forEach((item) => {
+      display(item);
+    });
+    pageBtn.innerHTML = "";
+    for (let i = 1; i <= totalPages; ++i) {
+      const li = document.createElement("li");
+      li.classList.add("page-item");
+      const a = document.createElement("a");
+      a.classList.add("page-link");
+      a.setAttribute("href", "#");
+      a.addEventListener("click", pagination);
+      a.textContent = i;
+      li.appendChild(a);
+      pageBtn.appendChild(li);
+    }
   } catch (error) {
     console.log("Error fetching data:", error);
   }
 }
 
-//Displaying all the expense data for the 1st time
-displayData();
+// Displaying all the expense data for the first time
+displayData(currPage);
 
-//Posting new or updated expense detail
+// Posting new or updated expense detail
 async function postExpense(event) {
   const token = localStorage.getItem("token");
   event.preventDefault();
@@ -54,7 +97,7 @@ async function postExpense(event) {
   };
   try {
     if (form.dataset.mode === "edit") {
-      editExpense(form.dataset.itemId, details);
+      await editExpense(form.dataset.itemId, details);
     } else if (form.dataset.mode === "post" || form.dataset.mode === "") {
       await axios.post("http://localhost:3000/user-expense", details, {
         headers: {
@@ -62,7 +105,7 @@ async function postExpense(event) {
         },
       });
       detailItems.innerHTML = "";
-      await displayData();
+      await displayData(currPage);
       form.reset();
     }
   } catch (error) {
@@ -70,7 +113,7 @@ async function postExpense(event) {
   }
 }
 
-//Editing and posting current expense detail
+// Editing and posting current expense detail
 async function editExpense(itemId, details) {
   const token = localStorage.getItem("token");
   try {
@@ -86,14 +129,14 @@ async function editExpense(itemId, details) {
     form.dataset.mode = "post";
     submitButton.textContent = "Add Expense";
     detailItems.innerHTML = "";
-    await displayData();
+    await displayData(currPage);
     form.reset();
   } catch (error) {
     console.log("Error editing item:", error);
   }
 }
 
-//Deleting expense detail
+// Deleting expense detail
 async function deleteItem(itemId) {
   const token = localStorage.getItem("token");
   try {
@@ -103,13 +146,13 @@ async function deleteItem(itemId) {
       },
     });
     detailItems.innerHTML = "";
-    await displayData();
+    await displayData(currPage);
   } catch (error) {
     console.log("Error deleting item:", error);
   }
 }
 
-//Handling on button click either delete or edit
+// Handling button clicks for edit or delete
 function handleButton(event) {
   event.preventDefault();
   const target = event.target;
@@ -126,7 +169,7 @@ function handleButton(event) {
   }
 }
 
-//Setting the data in edit mode
+// Setting data in edit mode
 async function editButtonClicked(itemId) {
   const token = localStorage.getItem("token");
   try {
@@ -150,11 +193,12 @@ async function editButtonClicked(itemId) {
   }
 }
 
+// Get item ID from parent row
 function getItemId(parentRow) {
   return parentRow.dataset.id;
 }
 
-//Buy preminum
+// Buy premium
 async function buyPremium(event) {
   event.preventDefault();
   const token = localStorage.getItem("token");
@@ -181,9 +225,9 @@ async function buyPremium(event) {
         alert("You are a Premium User Now");
       },
     };
-    const payToRajorPay = new Razorpay(options);
-    payToRajorPay.open();
-    payToRajorPay.on("payment.failed", (response) => {
+    const payToRazorPay = new Razorpay(options);
+    payToRazorPay.open();
+    payToRazorPay.on("payment.failed", (response) => {
       console.log(response);
       alert("Something went wrong");
     });
@@ -192,37 +236,23 @@ async function buyPremium(event) {
   }
 }
 
-// function parseJwt(token) {
-//   const base64Url = token.split(".")[1];
-//   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-//   const jsonPayload = decodeURIComponent(
-//     window
-//       .atob(base64)
-//       .split("")
-//       .map(function (c) {
-//         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-//       })
-//       .join("")
-//   );
-
-//   return JSON.parse(jsonPayload);
-// }
-
+// Display premium status
 function premium() {
   premiumBtn.style.display = "none";
-  const item = document.createElement("h3");
-  item.innerHTML = "You are premium user now:";
+  premiumText.style.display = "block";
   premiumUser.appendChild(item);
   isFirstTime = false;
 }
 
+// Display expense data in a row
 function display(data) {
   const listItem = document.createElement("tr");
   listItem.dataset.id = data.id;
   listItem.innerHTML = `
+    <td class="col-4 text-center">${data.createdAt.toString().slice(0, 10)}</td>
     <td class="col-4 text-center">${data.category}</td>
-    <td class="col-4 text-center ">${data.description}</td>
-    <td class="col-2 text-center ">${data.amount}</td>
+    <td class="col-4 text-center">${data.description}</td>
+    <td class="col-2 text-center">${data.amount}</td>
     <td class="col-1 text-center">
       <button class="btn btn-info">Edit</button>
     </td>

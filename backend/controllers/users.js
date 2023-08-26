@@ -88,11 +88,9 @@ exports.postCredential = async (req, res, next) => {
 };
 
 exports.getExpensePage = (req, res, next) => {
-  res.sendFile(path.join(absolutePath, "public", "expense", "expense.html"));
+  res.sendFile(path.join(absolutePath, "public", "html", "expense.html"));
 };
 
 exports.getLoginPage = (req, res, next) => {
-  res.sendFile(
-    path.join(absolutePath, "public", "sign-in-up", "sign_in_up.html")
-  );
+  res.sendFile(path.join(absolutePath, "public", "html", "sign_in_up.html"));
 };

@@ -1,3 +1,4 @@
+// Get DOM elements
 const form1 = document.getElementById("form1");
 const form2 = document.getElementById("form2");
 const username = document.getElementById("username");
@@ -14,32 +15,35 @@ const one = document.getElementById("one");
 const two = document.getElementById("two");
 const forgotPasswordBtn = document.getElementById("forgotPassword");
 
+// Event listeners
 form1.addEventListener("submit", postUserData1);
 form2.addEventListener("submit", postUserData2);
 signup.addEventListener("click", handleSignup);
-login.addEventListener("click", handlelogin);
+login.addEventListener("click", handleLogin);
 forgotPasswordBtn.addEventListener("click", handleForgotPassword);
 
+// Switch to signup form
 function handleSignup() {
   one.classList.remove("display-block");
   one.classList.add("display-none");
   two.classList.remove("display-none");
   two.classList.add("display-block");
-  history.pushState(null, null, "/user/signup");
 }
 
-function handlelogin() {
+// Switch to login form
+function handleLogin() {
   one.classList.remove("display-none");
   one.classList.add("display-block");
   two.classList.remove("display-block");
   two.classList.add("display-none");
-  history.pushState(null, null, "/user/login");
 }
 
+// Redirect to forgot password page
 function handleForgotPassword() {
   window.location.href = "/password/forgotPassword";
 }
 
+// Handle login form submission
 async function postUserData1(event) {
   event.preventDefault();
   const details = {
@@ -52,7 +56,7 @@ async function postUserData1(event) {
       details
     );
     localStorage.setItem("token", response.data.token);
-    if (response.data.success == "success") {
+    if (response.data.success === "success") {
       window.location.href = "/expense/addexpense";
     } else {
       window.location.href = "/user/login";
@@ -62,6 +66,7 @@ async function postUserData1(event) {
   }
 }
 
+// Handle signup form submission
 async function postUserData2(event) {
   event.preventDefault();
   const details = {

@@ -7,9 +7,7 @@ const onResetData = {
 };
 
 exports.getPopUp = (req, res, next) => {
-  res.sendFile(
-    path.join(aboslutePath, "public", "pop-up-card", "pop-card.html")
-  );
+  res.sendFile(path.join(aboslutePath, "public", "html", "pop-card.html"));
 };
 
 exports.getPopUpData = (req, res, next) => {

@@ -1,6 +1,5 @@
 const button = document.getElementById("button");
 const mainList = document.getElementById("position");
-//button.addEventListener("click", displayData);
 
 displayData();
 
@@ -16,8 +15,8 @@ async function displayData() {
 
     response.data.forEach((item) => {
       const listItem = document.createElement("div");
-      listItem.classList.add("main_content_list");
-      listItem.style.backgroundColor = " rgb(12, 5, 139)";
+      listItem.classList.add("main_content_list", "bg-secondary");
+      listItem.style.boxShadow = "10px 10px 10px rgba(0, 0, 0, 0.4)";
       listItem.innerHTML = `<div class="row d-flex justify-content-center align-items-center">
       <div class="col-4">${item.idx}</div>
       <div class="col-4">${item.username}</div>

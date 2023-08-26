@@ -1,9 +1,10 @@
 const form = document.getElementById("form");
 const email = document.getElementById("email");
-
+const textToShow = document.getElementById("textToShow");
 form.addEventListener("submit", postEmail);
 
 async function postEmail(event) {
+  textToShow.innerHTML = "Processing....";
   event.preventDefault();
   const detail = {
     email: email.value,
