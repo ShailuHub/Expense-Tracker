@@ -8,7 +8,9 @@ const path = require("path");
 exports.getExpensesforPagination = async (req, res, next) => {
   try {
     const page = req.params.page;
-    const limit = 3;
+    const row = req.params.row;
+    console.log(page, row);
+    const limit = Number(row);
     const toSkipAfter = (page - 1) * limit;
     const totalExpenses = await Expense.count({
       where: { userId: req.user.id },

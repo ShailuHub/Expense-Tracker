@@ -36,7 +36,7 @@ router.patch(
 );
 
 router.get(
-  "/user-expense/:page",
+  "/user-expense/:page/:row",
   userAuthentication.authenticate,
   expenseControllers.getExpensesforPagination
 );

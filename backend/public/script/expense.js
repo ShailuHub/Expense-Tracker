@@ -9,11 +9,20 @@ const premiumBtn = document.getElementById("premiumBtn");
 const premiumUser = document.getElementById("premium-user");
 const premiumText = document.getElementById("premium-text");
 const pageBtn = document.getElementById("pagination-custom");
+const pageNo = document.querySelectorAll(".page");
 
 // Initialize variables
 form.dataset.mode = "";
 let isFirstTime = true;
 let currPage = 1;
+let rowsToDisplay = 5;
+
+pageNo.forEach((page) => {
+  page.addEventListener("click", (event) => {
+    rowsToDisplay = event.target.textContent;
+    displayData(currPage);
+  });
+});
 
 // Applying event listeners
 form.addEventListener("submit", postExpense);
@@ -26,7 +35,7 @@ async function pagination(event) {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://localhost:3000/user-expense/${page}`,
+      `http://localhost:3000/user-expense/${page}/${rowsToDisplay}`,
       {
         headers: { Authorization: token },
       }
@@ -51,7 +60,7 @@ async function displayData(page) {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://localhost:3000/user-expense/${page}`,
+      `http://localhost:3000/user-expense/${page}/${rowsToDisplay}`,
       {
         headers: { Authorization: token },
       }
@@ -240,7 +249,7 @@ async function buyPremium(event) {
 function premium() {
   premiumBtn.style.display = "none";
   premiumText.style.display = "block";
-  premiumUser.appendChild(item);
+
   isFirstTime = false;
 }
 
@@ -249,10 +258,10 @@ function display(data) {
   const listItem = document.createElement("tr");
   listItem.dataset.id = data.id;
   listItem.innerHTML = `
-    <td class="col-4 text-center">${data.createdAt.toString().slice(0, 10)}</td>
+    <td class="col-2 text-center">${data.createdAt.toString().slice(0, 10)}</td>
     <td class="col-4 text-center">${data.category}</td>
     <td class="col-4 text-center">${data.description}</td>
-    <td class="col-2 text-center">${data.amount}</td>
+    <td class="col-4 text-center">${data.amount}</td>
     <td class="col-1 text-center">
       <button class="btn btn-info">Edit</button>
     </td>
