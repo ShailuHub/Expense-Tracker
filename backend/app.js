@@ -15,6 +15,7 @@ const User = require("./models/users");
 const Expense = require("./models/expenses");
 const Order = require("./models/orders");
 const Password = require("./models/forgotPassword");
+const Download = require("./models/download");
 
 app.use(cors());
 app.use(express.static("public"));
@@ -36,6 +37,9 @@ Order.belongsTo(User);
 
 User.hasMany(Password);
 Password.belongsTo(User);
+
+User.hasMany(Download);
+Download.belongsTo(User);
 
 sequelize
   .sync()

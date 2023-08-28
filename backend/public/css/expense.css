@@ -39,10 +39,25 @@
   z-index: 50;
 }
 
-.navbar-btn {
+.pageBtn {
   display: flex;
   gap: 4px;
 }
+.table-custom {
+  position: relative;
+}
+
+#download {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+/* 
+#footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+} */
 
 @media screen and (max-width: 768px) {
   .form_row {
@@ -83,5 +98,10 @@
     gap: 20px;
     min-width: 360px;
     width: 100%;
+  }
+  #rowsToDisplay {
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
   }
 }

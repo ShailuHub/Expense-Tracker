@@ -14,7 +14,9 @@
     <title>Expense Tracker</title>
   </head>
   <body>
-    <!-- Display Block 1 (Login Page) -->
+    <div class="container-sm w-auto bg-secondary p-3 mt-3 rounded-2">
+      <h3 class="text-light text-center">Track ur expesne will ---> save money today & invest it tomorrow</h3>
+    </div>
     <div class="display-block" id="one">
       <div class="container outer-container">
         <!-- Log in page -->
@@ -60,7 +62,11 @@
             </div>
           </form>
         </div>
-
+        <div class="container mt-3" id="popUp-error-logIn">
+          <div class="popUp-row alert alert-danger">
+            <strong>Invalid !</strong> email or password!!
+          </div>
+        </div>
         <!-- Hidden Content 2 -->
         <div class="hidden-two">
           <div class="hidden-one-content">
@@ -92,6 +98,21 @@
         </div>
 
         <!-- Sign up page -->
+        <div class="container mt-3" id="popUp-success">
+          <div class="popUp-row alert alert-success">
+            <strong>Success !</strong> Registation successfull !!
+          </div>
+        </div>
+        <div class="container mt-3" id="popUp-password-error">
+          <div class="popUp-row alert alert-danger">
+            <strong>Failed !</strong> Password & confirm password not matched !!
+          </div>
+        </div>
+        <div class="container mt-3" id="popUp-email-error">
+          <div class="popUp-row alert alert-danger">
+            <strong>Failed !</strong> Email already exists !!
+          </div>
+        </div>
         <div class="inner-container2">
           <h2 class="mb-5 text-center">Create an Account</h2>
           <form action="" id="form2" method="POST">
@@ -156,6 +177,54 @@
       </div>
     </div>
 
+    <footer class="container-fluid bg-secondary" id="footer">
+      <div class="container bg-secondary">
+        <div class="row p-3 justify-content-center">
+          <div class="col-lg-3 bg-dark rounded-3 shadow z-3 p-3 mt-3 mb-3 me-3">
+            <div class="text-light text-center">
+              <h2 id="logo-img ">&#8377</h2>
+              <h3 id="logo-text">Expense Tracker</h3>
+            </div>
+            <p class="text-light text-center">
+              Plot no: 65, 66 & 68
+              <br>
+              abc complex xyy nagar
+              <br>
+              jkl pur India
+            </p>
+          </div>
+          <div class="col-lg-3 bg-dark rounded-3 shadow z-3 p-3 mt-3 mb-3 me-3">
+            <div class="text-light text-center">
+              <h4>Contact us</h4>
+              <h4 id="logo-text">Expense Tracker</h4>
+            </div>
+            <p class="text-light text-center">
+              ShailuHub
+              <br>
+              shailesh.respond@gamil.com
+              <br>
+              +91-9876543210
+            </p>
+          </div>
+          <div class="col-lg-3 bg-dark rounded-3 shadow z-3 p-3 mt-3 mb-3 me-3">
+            <div class="text-light text-center">
+              <h4>Supports</h4>
+              <h4 id="logo-text">Expense Tracker</h4>
+            </div>
+            <p class="text-light text-center">
+              Refund Policy
+              <br>
+              Privacy Policy
+              <br>
+              Terms & conditions
+            </p>
+          </div>
+          <hr class="mt-3">
+          <h5 class="text-light text-center">Copyright 2023</h5>
+          <hr class="mt-3">
+        </div>
+      </div>
+    </footer>
     <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- Custom JavaScript -->

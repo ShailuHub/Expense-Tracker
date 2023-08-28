@@ -102,8 +102,7 @@ const noRecord1 = document.getElementById("noRecord1");
 const noRecord2 = document.getElementById("noRecord2");
 const mainContainer1 = document.getElementById("main-table1");
 const mainContainer2 = document.getElementById("main-table2");
-const download1 = document.getElementById("download1");
-const download2 = document.getElementById("download2");
+const previousContainer = document.getElementById("previous-container");
 
 // Attach event listeners to forms
 form1.addEventListener("submit", (event) => postDate(event, "date"));
@@ -208,11 +207,9 @@ function display(data) {
 // Function to display "Record" message
 function displayNoRecord() {
   if (searchType === "date") {
-    download1.style.display = "none";
     mainContainer1.style.display = "none";
     noRecord1.style.display = "block";
   } else if (searchType === "month") {
-    download2.style.display = "none";
     mainContainer2.style.display = "none";
     noRecord2.style.display = "block";
   }
@@ -221,11 +218,9 @@ function displayNoRecord() {
 // Function to display "No Record" message
 function displayRecord() {
   if (searchType === "date") {
-    download1.style.display = "block";
     mainContainer1.style.display = "block";
     noRecord1.style.display = "none";
   } else if (searchType === "month") {
-    download2.style.display = "block";
     mainContainer2.style.display = "block";
     noRecord2.style.display = "none";
   }
@@ -239,3 +234,39 @@ function whereToInsert(listItem) {
     detailItems2.appendChild(listItem);
   }
 }
+
+//function to get previous Download files
+async function previousDownload() {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get("http://localhost:3000/download/url", {
+      headers: {
+        Authorization: token,
+      },
+    });
+    if (response.data.success === "success") {
+      response.data.downloadURL.forEach((item, idx) => {
+        displayDownloadURL(item, `Expense-file-${idx + 1}`);
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function displayDownloadURL(data, fileName) {
+  const listItem = document.createElement("div");
+  listItem.classList.add("row", "p-1");
+  listItem.innerHTML = `
+      <div class="col-12 col-md-3 mb-3 text-center text-light">${data.createdAt
+        .toString()
+        .slice(0, 10)}</div>
+      <div class="col-12 col-md-6  mb-3  text-center text-light">${fileName}</div>
+      <div class="col-12 col-md-3 mb-3  text-center text-light">
+          <a class="btn btn-dark" href="${data.file}">Download</a>
+      </div>
+      <hr>
+    `;
+  previousContainer.appendChild(listItem);
+}
+previousDownload();

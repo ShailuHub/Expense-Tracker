@@ -11,34 +11,43 @@
 #leaderBoard {
   margin-top: 100px;
 }
-.main {
-  border-radius: 20px;
-  width: 90%;
-  margin: 0 auto;
-  padding: 15px;
-  color: white;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  border: 2px solid white;
-}
-
 .main h4 {
   font-size: 1.5rem;
   padding: 5px;
 }
 
-.main_content_text {
-  width: 50%;
-  display: inline;
-  border: 2px solid white;
-  text-align: center;
-  padding: 5px 10px;
+/* <div class="container" id="leaderBoard">
+      <div class="main bg-secondary">
+        <div class="main_content_text bg-secondary">
+          <h4>Leader Board</h4>
+        </div>
+        <div id="position"></div>
+      </div>
+    </div> */
+
+.main {
   border-radius: 20px;
-  position: absolute;
-  margin-top: -50px;
+  width: 50%;
+  margin: 0 auto;
+  padding: 15px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid white;
+  position: relative;
+  align-items: center;
 }
 
+.main_content_text {
+  align-items: center;
+  width: 50%;
+  margin: 15px 0 auto;
+  border-bottom: 2px solid white;
+}
+.main_content_text p {
+  text-align: center;
+}
 #position {
   width: 90%;
   display: flex;
@@ -55,19 +64,11 @@
   padding: 10px;
   border-radius: 20px;
   height: 3rem;
+  margin-top: 20px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 992px) {
   .main {
-    width: 70%;
-  }
-}
-
-@media screen and (min-width: 375px) {
-  .main_content_text {
-    width: 70%;
-    height: 40%;
-    margin-top: -40px;
-    text-align: center;
+    width: 80%;
   }
 }

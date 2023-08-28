@@ -6,8 +6,9 @@ const category = document.getElementById("category");
 const detailItems = document.getElementById("tableBody");
 const submitButton = document.getElementById("submit");
 const premiumBtn = document.getElementById("premiumBtn");
-const premiumUser = document.getElementById("premium-user");
+const download = document.querySelector("#download button");
 const premiumText = document.getElementById("premium-text");
+
 const pageBtn = document.getElementById("pagination-custom");
 const pageNo = document.querySelectorAll(".page");
 
@@ -17,6 +18,7 @@ let isFirstTime = true;
 let currPage = 1;
 let rowsToDisplay = 5;
 
+// Adding event listeners for pagination buttons
 pageNo.forEach((page) => {
   page.addEventListener("click", (event) => {
     rowsToDisplay = event.target.textContent;
@@ -28,6 +30,24 @@ pageNo.forEach((page) => {
 form.addEventListener("submit", postExpense);
 detailItems.addEventListener("click", handleButton);
 premiumBtn.addEventListener("click", buyPremium);
+download.addEventListener("click", downloadFile);
+
+// Download file function
+async function downloadFile() {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get("http://localhost:3000/download", {
+      headers: { Authorization: token },
+    });
+    if (response.data.success === "success") {
+      const a = document.createElement("a");
+      (a.href = response.data.fileUrl), (a.download = "myexpense.csv");
+      a.click();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Pagination function
 async function pagination(event) {
@@ -249,7 +269,7 @@ async function buyPremium(event) {
 function premium() {
   premiumBtn.style.display = "none";
   premiumText.style.display = "block";
-
+  download.disabled = false;
   isFirstTime = false;
 }
 

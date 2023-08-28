@@ -83,14 +83,6 @@
   width: 70%;
 }
 
-#download1,
-#download2 {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  display: none;
-}
-
 #noRecord1,
 #noRecord2,
 #main-table1,
@@ -108,4 +100,8 @@
 #noRecord2 {
   width: 70%;
   margin: auto;
+}
+
+.previous-download {
+  width: 100%;
 }

@@ -79,7 +79,7 @@ exports.postCredential = async (req, res, next) => {
           token: createToken,
         });
       } else {
-        res.send("failed");
+        res.status(404).send({ message: "User doesn't exists!!" });
       }
     }
   } catch (error) {

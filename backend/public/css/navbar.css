@@ -18,16 +18,13 @@ body {
   top: 0;
   left: 0;
 }
+
 .navbar-container {
   height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-}
-
-.navbar-btn {
-  margin-right: 15px;
 }
 
 .navbar-logo {
@@ -81,6 +78,7 @@ body {
   position: absolute;
   transform: rotate(135deg);
 }
+
 .cross-btn {
   display: none;
 }
@@ -151,19 +149,38 @@ body {
   .toggle-btn {
     display: block;
   }
+
+  .navbar-btn {
+    display: block;
+  }
+
+  #premium-text-sm {
+    display: none;
+  }
+  .navbar-btn-sm {
+    display: none;
+  }
+
+  .cross-btn {
+    display: none;
+  }
 }
 
-@media screen and (min-width: 992px) {
+/* @media screen and (min-width: 992px) {
   .toggle-btn {
     display: none;
   }
   .cross-btn {
     display: none;
   }
-}
+} */
 
 @media screen and (max-width: 576px) {
+  .navbar-btn-sm {
+    display: block;
+  }
   .navbar-btn {
     display: none;
+    height: 100px;
   }
 }

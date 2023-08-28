@@ -14,6 +14,10 @@ const signup = document.getElementById("signup");
 const one = document.getElementById("one");
 const two = document.getElementById("two");
 const forgotPasswordBtn = document.getElementById("forgotPassword");
+const popUp_success = document.getElementById("popUp-success");
+const popUp_email = document.getElementById("popUp-email-error");
+const popUp_password = document.getElementById("popUp-password-error");
+const popUp_logIn = document.getElementById("popUp-error-logIn");
 
 // Event listeners
 form1.addEventListener("submit", postUserData1);
@@ -62,7 +66,12 @@ async function postUserData1(event) {
       window.location.href = "/user/login";
     }
   } catch (err) {
-    console.log(err);
+    if (err.response && err.response.status === 404) {
+      popUp_logIn.style.display = "block";
+      setTimeout(() => {
+        popUp_logIn.style.display = "none";
+      }, 3000);
+    }
   }
 }
 
@@ -76,10 +85,27 @@ async function postUserData2(event) {
     confirm_password: confirm_password.value,
   };
   try {
-    await axios.post("http://localhost:3000/user/signUp", details);
+    const response = await axios.post(
+      "http://localhost:3000/user/signUp",
+      details
+    );
     form2.reset();
-    window.location.href = "/user/login";
+    popUp_success.style.display = "block";
+    setTimeout(() => {
+      window.location.href = "/user/login";
+    }, 2000);
   } catch (err) {
     console.log(err);
+    if (err.response && err.response.status === 400) {
+      popUp_password.style.display = "block";
+      setTimeout(() => {
+        popUp_password.style.display = "none";
+      }, 3000);
+    } else if (err.response && err.response.status === 409) {
+      popUp_email.style.display = "block";
+      setTimeout(() => {
+        popUp_email.style.display = "none";
+      }, 3000);
+    }
   }
 }

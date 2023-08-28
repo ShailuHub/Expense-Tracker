@@ -36,7 +36,6 @@
           <li><a href="#" id="expenseHome-lg">Home</a></li>
           <li><a href="#" id="expenseLeaderBoard-lg">Leader Board</a></li>
           <li><a href="#" id="premiumFeatures-lg">Premium</a></li>
-          <li><a href="#">Contact</a></li>
         </ul>
       </div>
       <!-- Toggle Menu (for mobile) -->
@@ -45,15 +44,22 @@
           <li><a href="#" id="expenseHome-sm">Home</a></li>
           <li><a href="#" id="expenseLeaderBoard-sm">Leader Board</a></li>
           <li><a href="#" id="premiumFeatures-sm">Premium</a></li>
-          <li><a href="#">Contact</a></li>
         </ul>
         
+        <!-- Toggle button for mobile  -->
+        <div class="navbar-btn-sm">
+          <div class="d-flex flex-column ">
+            <button class="btn btn-dark mx-3 mt-2 w-auto" id="premiumBtn-sm">Buy Premium</button>
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          <button class="btn btn-danger mx-3 mt-2 w-auto" id="logOut-sm">Log out</button>
+          </div>
+        </div>
       </div>
       <!-- Navbar Buttons -->
 
-        <p class="text-center mt-3 px-3" id="premium-text">PRO !!</p>
-
-      <div class="navbar-btn disabled">
+      <!-- To show if user is premium in bigger screen -->
+      <p class="text-center mt-3 px-3" id="premium-text">PRO !!</p>
+      <div class="navbar-btn">
         <!-- Premium Buttons and Log Out -->
         <button class="btn btn-dark" id="premiumBtn">Buy Premium</button>
         
@@ -62,11 +68,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Premium User Section -->
-  <!-- <div class="container" id="premium-user">
-    
-  </div> -->
 
   <!-- Expense Form Section -->
   <div class="container-sm mt-4 form-container">
@@ -117,7 +118,7 @@
 
   <!-- Expense Table Section -->
   <div class="container">
-    <div class="container-sm table-responsive container row m-auto p-4 pt-4 bg-secondary rounded-4 mt-4">
+    <div class="container table-responsive table-responsive-sm p-4 pt-4 bg-secondary rounded-4 mt-4 table-custom">
       <table class="table align-middle table-striped table-hover table-bordered table-dark border-dark">
         <thead>
           <tr class="table-secondary">
@@ -138,16 +139,22 @@
 
         </ul>
       </div>
+      <div id="download">
+        <button class="btn btn-dark" disabled>Download</button>
+      </div>
     </div>
     <div class="container mt-3 d-flex justify-content-center gap-3 bg-secondary p-4 rounded-3 mb-5" id="rowsToDisplay">
       <div class="d-flex justify-content-center align-content-center">
-        <h3 class="my-auto text-light">Number of rows want to display --> </h3>
+        <h4 class="my-auto text-light">Number of rows want to display --> </h4>
       </div>
-      <div class="btn btn-dark page" >5</div>
+      <div class="pageBtn">
+        <div class="btn btn-dark page" >5</div>
       <div class="btn btn-dark page" >10</div>
       <div class="btn btn-dark page" >15</div>
+      </div>
     </div>
   </div>
+
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

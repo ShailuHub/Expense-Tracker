@@ -16,37 +16,52 @@
   <body>
     <div class="container-flid navbar-main-container bg-secondary">
       <div class="container-xl navbar-container">
-        
+        <!-- Navbar Logo Section -->
         <div class="navbar-logo">
+          <!-- Toggle Button -->
           <div class="toggle-btn" id="toggle-btn">
             <div class="top"></div>
             <div class="middle"></div>
             <div class="bottom"></div>
           </div>
+          <!-- Cross Button -->
           <div class="cross-btn" id="cross-btn">
-              <div class="top-cross"></div>
-              <div class="bottom-cross"></div>
+            <div class="top-cross"></div>
+            <div class="bottom-cross"></div>
           </div>
           <h3 id="logo-img">&#8377</h3>
           <h4 id="logo-text">Expense Tracker</h4>
         </div>
-        <div class="nav-menu" >
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
           <ul>
-            <li><a href="#" id="expenseHome-lg" >Home</a></li>
+            <li><a href="#" id="expenseHome-lg">Home</a></li>
             <li><a href="#" id="expenseLeaderBoard-lg">Leader Board</a></li>
             <li><a href="#" id="premiumFeatures-lg">Premium</a></li>
-            <li><a href="#">Contact</a></li>
           </ul>
         </div>
+        <!-- Toggle Menu (for mobile) -->
         <div class="toggle-menu" id="toggle-menu">
           <ul>
             <li><a href="#" id="expenseHome-sm">Home</a></li>
             <li><a href="#" id="expenseLeaderBoard-sm">Leader Board</a></li>
             <li><a href="#" id="premiumFeatures-sm">Premium</a></li>
-            <li><a href="#">Contact</a></li>
           </ul>
+          
+          <!-- Toggle button for mobile  -->
+          <div class="navbar-btn-sm">
+            <div class="d-flex flex-column ">
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+            <button class="btn btn-danger mx-3 mt-2 w-auto" id="logOut-sm">Log out</button>
+            </div>
+          </div>
         </div>
+        <!-- Navbar Buttons -->
+  
+        <!-- To show if user is premium in bigger screen -->
+        <p class="text-center mt-3 px-3" id="premium-text">PRO !!</p>
         <div class="navbar-btn">
+          <!-- Premium Buttons and Log Out -->
           <button class="btn btn-danger" id="logOut">Log out</button>
         </div>
       </div>
@@ -54,9 +69,18 @@
     <div class="container" id="leaderBoard">
       <div class="main bg-secondary">
         <div class="main_content_text bg-secondary">
-          <h4>Leader Board</h4>
+          
+          <p>Leader Board</p>
         </div>
-        <div id="position"></div>
+        <div id="position">
+          <div class="main_content_list bg-dark">
+            <div class="row d-flex justify-content-center align-items-center">
+              <div class="col-2 col-sm-2">Position</div>
+              <div class="col-4 col-sm-4">Name</div>
+              <div class="col-6 col-sm-6">Amount (Rs.)</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

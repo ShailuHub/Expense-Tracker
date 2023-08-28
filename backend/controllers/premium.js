@@ -2,6 +2,8 @@ const absolutePath = require("../utils/path");
 const path = require("path");
 const User = require("../models/users");
 const Expense = require("../models/expenses");
+const Download = require("../models/download");
+const AWS = require("aws-sdk");
 
 // Get leader board data (API endpoint)
 exports.getLeaderBoard = (req, res, next) => {
@@ -88,14 +90,14 @@ exports.getExpenseDetail = async (req, res, next) => {
 
       // Filter expenses based on search criteria
       expenseDetail.forEach((expense) => {
-        const createdDate = expense.createdAt;
+        const createdDate = new Date(expense.createdAt);
         if (
           (searchType === "date" &&
             createdDate.getDate() === inputDate.getDate() &&
-            createdDate.getMonth() === inputDate.getMonth() &&
+            createdDate.getMonth() + 1 === inputDate.getMonth() + 1 &&
             createdDate.getFullYear() === inputDate.getFullYear()) ||
           (searchType === "month" &&
-            createdDate.getMonth() === inputDate.getMonth() &&
+            createdDate.getMonth() + 1 === inputDate.getMonth() + 1 &&
             createdDate.getFullYear() === inputDate.getFullYear())
         ) {
           expenseArray.push(expense);
@@ -115,5 +117,67 @@ exports.getExpenseDetail = async (req, res, next) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send({ error: "An error occurred" });
+  }
+};
+
+exports.downloadExpense = async (req, res, next) => {
+  try {
+    const expenses = await req.user.getExpenses();
+    const stringifyExpenses = JSON.stringify(expenses);
+    const fileName = `expense-${req.user.id}/${new Date()}.txt`;
+    const fileUrl = await uploadToS3(stringifyExpenses, fileName);
+    await Download.create({
+      file: fileUrl,
+      userId: req.user.id,
+    });
+    await res.status(200).json({ fileUrl, success: "success" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: "failed", message: "Internal server error" });
+  }
+};
+
+// data and the name of the file to be stored in aws
+function uploadToS3(data, filename) {
+  const bucketName = "trackyourexpense007";
+  const iAmUser = process.env.I_AM_USER;
+  const iAmUserSecretKey = process.env.I_AM_USER_KEY;
+  //create an object which talk with aws s3 which has all the authentication key;
+  const awsObj = new AWS.S3({
+    accessKeyId: iAmUser,
+    secretAccessKey: iAmUserSecretKey,
+  });
+
+  //create parameters object to cnnect with which bucket file name to save
+  const params = {
+    Bucket: bucketName,
+    Key: filename,
+    Body: data,
+    //ACL access control level
+    ACL: "public-read",
+  };
+  return new Promise((resolve, reject) => {
+    awsObj.upload(params, (err, s3response) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        resolve(s3response.Location);
+      }
+    });
+  });
+}
+
+exports.getDownloadUrl = async (req, res, next) => {
+  try {
+    const downloadURL = await req.user.getDownloads();
+    const fileName = `Expense-File-${downloadURL.length}`;
+    res.status(200).json({ downloadURL, fileName, success: "success" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: "failed", message: "Intenal server error" });
   }
 };
