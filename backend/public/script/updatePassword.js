@@ -24,7 +24,7 @@ async function postResetPassword(event) {
   try {
     // Sending a POST request to reset the password
     const response = await axios.post(
-      `http://localhost:3000/password/resetpassword/${userId}`,
+      `http://3.109.64.14:3000/password/resetpassword/${userId}`,
       details
     );
 

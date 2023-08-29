@@ -56,7 +56,7 @@ async function postUserData1(event) {
   };
   try {
     const response = await axios.post(
-      "http://localhost:3000/user/logIn",
+      "http://3.109.64.14:3000/user/logIn",
       details
     );
     localStorage.setItem("token", response.data.token);
@@ -86,7 +86,7 @@ async function postUserData2(event) {
   };
   try {
     const response = await axios.post(
-      "http://localhost:3000/user/signUp",
+      "http://3.109.64.14:3000/user/signUp",
       details
     );
     form2.reset();

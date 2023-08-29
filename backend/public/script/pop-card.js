@@ -8,7 +8,7 @@ okBtn.addEventListener("click", takeMeTo);
 async function showMessage() {
   try {
     const getResponse = await axios.get(
-      "http://localhost:3000/pop-up/resetMsg"
+      "http://3.109.64.14:3000/pop-up/resetMsg"
     );
     console.log(getResponse.data);
     await display(getResponse.data);

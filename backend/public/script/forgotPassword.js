@@ -22,7 +22,7 @@ async function postEmail(event) {
   try {
     // Sending a POST request to the server
     const postResponse = await axios.post(
-      "http://localhost:3000/password/forgotPassword",
+      "http://3.109.64.14:3000/password/forgotPassword",
       detail
     );
 
@@ -31,7 +31,7 @@ async function postEmail(event) {
 
     try {
       // Sending a GET request for pop-up data
-      await axios.get("http://localhost:3000/pop-up");
+      await axios.get("http://3.109.64.14:3000/pop-up");
 
       // Redirecting to the pop-up page
       window.location.href = "/pop-up";

@@ -39,6 +39,9 @@ app.use(purchaseRouter);
 app.use(preminumRouter);
 app.use(passwordRouter);
 app.use(popUpRouter);
+app.use((req, res) => {
+  res.send(path.join(__dirname, `public/${req.url}`));
+});
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
