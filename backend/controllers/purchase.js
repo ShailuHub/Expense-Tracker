@@ -2,8 +2,8 @@ const RazorPay = require("razorpay");
 const User = require("../models/users");
 const Order = require("../models/orders");
 const razorPay = new RazorPay({
-  key_id: process.env.pay_keyId,
-  key_secret: process.env.pay_secretKey,
+  key_id: process.env.RAZORPAY_ID,
+  key_secret: process.env.RAZORPAY_KEY,
 });
 
 exports.purchaseMemberShip = async (req, res, next) => {

@@ -5,7 +5,6 @@ const description = document.getElementById("description");
 const category = document.getElementById("category");
 const detailItems = document.getElementById("tableBody");
 const submitButton = document.getElementById("submit");
-const premiumBtn = document.getElementById("premiumBtn");
 const download = document.querySelector("#download button");
 const premiumText = document.getElementById("premium-text");
 
@@ -29,7 +28,6 @@ pageNo.forEach((page) => {
 // Applying event listeners
 form.addEventListener("submit", postExpense);
 detailItems.addEventListener("click", handleButton);
-premiumBtn.addEventListener("click", buyPremium);
 download.addEventListener("click", downloadFile);
 
 // Download file function
@@ -227,43 +225,43 @@ function getItemId(parentRow) {
   return parentRow.dataset.id;
 }
 
-// Buy premium
-async function buyPremium(event) {
-  event.preventDefault();
-  const token = localStorage.getItem("token");
-  try {
-    const getResponse = await axios.get(
-      "http://localhost:3000/purchase/membership",
-      { headers: { Authorization: token } }
-    );
-    const options = {
-      key: getResponse.data.key_id,
-      order_id: getResponse.data.order.orderId,
-      handler: async function (responseFromRazorPay) {
-        const postResponse = await axios.post(
-          "http://localhost:3000/purchase/updateTransactionstatus",
-          {
-            order_id: responseFromRazorPay.razorpay_order_id,
-            payment_id: responseFromRazorPay.razorpay_payment_id,
-          },
-          { headers: { Authorization: token } }
-        );
-        if (postResponse.data.success === "success") {
-          premium();
-        }
-        alert("You are a Premium User Now");
-      },
-    };
-    const payToRazorPay = new Razorpay(options);
-    payToRazorPay.open();
-    payToRazorPay.on("payment.failed", (response) => {
-      console.log(response);
-      alert("Something went wrong");
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
+// // Buy premium
+// async function buyPremium(event) {
+//   event.preventDefault();
+//   const token = localStorage.getItem("token");
+//   try {
+//     const getResponse = await axios.get(
+//       "http://localhost:3000/purchase/membership",
+//       { headers: { Authorization: token } }
+//     );
+//     const options = {
+//       key: getResponse.data.key_id,
+//       order_id: getResponse.data.order.orderId,
+//       handler: async function (responseFromRazorPay) {
+//         const postResponse = await axios.post(
+//           "http://localhost:3000/purchase/updateTransactionstatus",
+//           {
+//             order_id: responseFromRazorPay.razorpay_order_id,
+//             payment_id: responseFromRazorPay.razorpay_payment_id,
+//           },
+//           { headers: { Authorization: token } }
+//         );
+//         if (postResponse.data.success === "success") {
+//           premium();
+//         }
+//         alert("You are a Premium User Now");
+//       },
+//     };
+//     const payToRazorPay = new Razorpay(options);
+//     payToRazorPay.open();
+//     payToRazorPay.on("payment.failed", (response) => {
+//       console.log(response);
+//       alert("Something went wrong");
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 // Display premium status
 function premium() {

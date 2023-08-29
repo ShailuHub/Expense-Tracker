@@ -3,7 +3,8 @@ const path = require("path");
 const User = require("../models/users");
 const Expense = require("../models/expenses");
 const Download = require("../models/download");
-const AWS = require("aws-sdk");
+const premiumServices = require("../services/premiumServices");
+// const AWS = require("aws-sdk");
 
 // Get leader board data (API endpoint)
 exports.getLeaderBoard = (req, res, next) => {
@@ -125,7 +126,10 @@ exports.downloadExpense = async (req, res, next) => {
     const expenses = await req.user.getExpenses();
     const stringifyExpenses = JSON.stringify(expenses);
     const fileName = `expense-${req.user.id}/${new Date()}.txt`;
-    const fileUrl = await uploadToS3(stringifyExpenses, fileName);
+    const fileUrl = await premiumServices.uploadToS3(
+      stringifyExpenses,
+      fileName
+    );
     await Download.create({
       file: fileUrl,
       userId: req.user.id,
@@ -138,36 +142,36 @@ exports.downloadExpense = async (req, res, next) => {
   }
 };
 
-// data and the name of the file to be stored in aws
-function uploadToS3(data, filename) {
-  const bucketName = "trackyourexpense007";
-  const iAmUser = process.env.I_AM_USER;
-  const iAmUserSecretKey = process.env.I_AM_USER_KEY;
-  //create an object which talk with aws s3 which has all the authentication key;
-  const awsObj = new AWS.S3({
-    accessKeyId: iAmUser,
-    secretAccessKey: iAmUserSecretKey,
-  });
+// // data and the name of the file to be stored in aws
+// function uploadToS3(data, filename) {
+//   const bucketName = "trackyourexpense007";
+//   const iAmUser = process.env.I_AM_USER;
+//   const iAmUserSecretKey = process.env.I_AM_USER_KEY;
+//   //create an object which talk with aws s3 which has all the authentication key;
+//   const awsObj = new AWS.S3({
+//     accessKeyId: iAmUser,
+//     secretAccessKey: iAmUserSecretKey,
+//   });
 
-  //create parameters object to cnnect with which bucket file name to save
-  const params = {
-    Bucket: bucketName,
-    Key: filename,
-    Body: data,
-    //ACL access control level
-    ACL: "public-read",
-  };
-  return new Promise((resolve, reject) => {
-    awsObj.upload(params, (err, s3response) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      } else {
-        resolve(s3response.Location);
-      }
-    });
-  });
-}
+//   //create parameters object to cnnect with which bucket file name to save
+//   const params = {
+//     Bucket: bucketName,
+//     Key: filename,
+//     Body: data,
+//     //ACL access control level
+//     ACL: "public-read",
+//   };
+//   return new Promise((resolve, reject) => {
+//     awsObj.upload(params, (err, s3response) => {
+//       if (err) {
+//         console.log(err);
+//         reject(err);
+//       } else {
+//         resolve(s3response.Location);
+//       }
+//     });
+//   });
+// }
 
 exports.getDownloadUrl = async (req, res, next) => {
   try {

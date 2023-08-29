@@ -12,6 +12,8 @@ const premiumFeautures_sm = document.getElementById("premiumFeatures-sm");
 const mainContent = document.getElementById("main-content");
 const logOut = document.getElementById("logOut");
 const logOut_sm = document.getElementById("logOut-sm");
+const premiumBtn = document.getElementById("premiumBtn");
+const premiumBtn_sm = document.getElementById("premiumBtn-sm");
 
 // Adding event listeners for navigation
 expenseLeaderBoard_lg.addEventListener("click", showLeaderBoard);
@@ -20,6 +22,8 @@ premiumFeautures_lg.addEventListener("click", showPremiumFeautes);
 premiumFeautures_sm.addEventListener("click", showPremiumFeautes);
 expenseHome_sm.addEventListener("click", showHome);
 expenseHome_lg.addEventListener("click", showHome);
+premiumBtn.addEventListener("click", buyPremium);
+premiumBtn_sm.addEventListener("click", buyPremium);
 
 // Adding event listener to log out buttons
 logOut.addEventListener("click", () => {
@@ -82,4 +86,47 @@ async function showPremiumFeautes() {
       alert("You are not a preium user");
     }
   }
+}
+
+// Buy premium
+async function buyPremium(event) {
+  event.preventDefault();
+  const token = localStorage.getItem("token");
+  try {
+    const getResponse = await axios.get(
+      "http://localhost:3000/purchase/membership",
+      { headers: { Authorization: token } }
+    );
+    const options = {
+      key: getResponse.data.key_id,
+      order_id: getResponse.data.order.orderId,
+      handler: async function (responseFromRazorPay) {
+        const postResponse = await axios.post(
+          "http://localhost:3000/purchase/updateTransactionstatus",
+          {
+            order_id: responseFromRazorPay.razorpay_order_id,
+            payment_id: responseFromRazorPay.razorpay_payment_id,
+          },
+          { headers: { Authorization: token } }
+        );
+        if (postResponse.data.success === "success") {
+          premium();
+          premium_sm();
+        }
+        alert("You are a Premium User Now");
+        window.location.href = "/expense/addexpense";
+      },
+    };
+    const payToRazorPay = new Razorpay(options);
+    payToRazorPay.open();
+    payToRazorPay.on("payment.failed", (response) => {
+      alert("Something went wrong");
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function premium_sm() {
+  premiumBtn_sm.style.display = "none";
 }
