@@ -147,6 +147,18 @@ body {
     gap: 10px;
     width: 80%;
   }
+  .inner-container1 {
+    width: 350px;
+  }
+  .inner-container2 {
+    width: 350px;
+  }
+  .hidden-one {
+    width: 350px;
+  }
+  .hidden-two {
+    width: 350px;
+  }
 }
 
 #submit1,

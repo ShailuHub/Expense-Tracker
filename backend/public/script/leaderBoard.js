@@ -11,7 +11,7 @@ async function displayData() {
   try {
     // Fetch data from the server
     const response = await axios.get(
-      "http://localhost:3000/premium/leaderboardList",
+      "http://3.109.64.14:3000/premium/leaderboardList",
       {
         headers: { Authorization: token },
       }

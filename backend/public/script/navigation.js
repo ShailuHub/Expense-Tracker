@@ -52,7 +52,7 @@ async function showLeaderBoard(event) {
   event.preventDefault();
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://localhost:3000/premium", {
+    const response = await axios.get("http://3.109.64.14:3000/premium", {
       headers: { Authorization: token },
     });
     if (response.data.success === "success") {
@@ -75,7 +75,7 @@ async function showHome(event) {
 async function showPremiumFeautes() {
   const token = localStorage.getItem("token");
   try {
-    const getResponse = await axios.get("http://localhost:3000/premium", {
+    const getResponse = await axios.get("http://3.109.64.14:3000/premium", {
       headers: { Authorization: token },
     });
     if (getResponse.data.success === "success") {
@@ -94,7 +94,7 @@ async function buyPremium(event) {
   const token = localStorage.getItem("token");
   try {
     const getResponse = await axios.get(
-      "http://localhost:3000/purchase/membership",
+      "http://3.109.64.14:3000/purchase/membership",
       { headers: { Authorization: token } }
     );
     const options = {
@@ -102,7 +102,7 @@ async function buyPremium(event) {
       order_id: getResponse.data.order.orderId,
       handler: async function (responseFromRazorPay) {
         const postResponse = await axios.post(
-          "http://localhost:3000/purchase/updateTransactionstatus",
+          "http://3.109.64.14:3000/purchase/updateTransactionstatus",
           {
             order_id: responseFromRazorPay.razorpay_order_id,
             payment_id: responseFromRazorPay.razorpay_payment_id,

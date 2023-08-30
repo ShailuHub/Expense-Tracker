@@ -16,15 +16,6 @@
   padding: 5px;
 }
 
-/* <div class="container" id="leaderBoard">
-      <div class="main bg-secondary">
-        <div class="main_content_text bg-secondary">
-          <h4>Leader Board</h4>
-        </div>
-        <div id="position"></div>
-      </div>
-    </div> */
-
 .main {
   border-radius: 20px;
   width: 50%;
@@ -69,6 +60,6 @@
 
 @media screen and (max-width: 992px) {
   .main {
-    width: 80%;
+    width: 100%;
   }
 }
