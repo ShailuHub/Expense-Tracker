@@ -34,7 +34,7 @@ async function postDate(event, type) {
   try {
     // Make a POST request to get search date
     const response = await axios.post(
-      "http://3.109.64.14:3000/premium/features/report",
+      "http://localhost:3000/premium/features/report",
       detail
     );
 
@@ -55,7 +55,7 @@ async function getExpense() {
   try {
     // Make a GET request to fetch expenses
     const response = await axios.get(
-      `http://3.109.64.14:3000/premium/features/report/${searchType}/${searchDate}`,
+      `http://localhost:3000/premium/features/report/${searchType}/${searchDate}`,
       {
         headers: {
           Authorization: token,
@@ -144,7 +144,7 @@ function whereToInsert(listItem) {
 async function previousDownload() {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://3.109.64.14:3000/download/url", {
+    const response = await axios.get(`http://localhost:3000/download/url`, {
       headers: {
         Authorization: token,
       },

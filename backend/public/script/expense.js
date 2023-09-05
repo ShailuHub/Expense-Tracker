@@ -34,7 +34,7 @@ download.addEventListener("click", downloadFile);
 async function downloadFile() {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://3.109.64.14:3000/download", {
+    const response = await axios.get(`http://localhost:3000/download`, {
       headers: { Authorization: token },
     });
     if (response.data.success === "success") {
@@ -53,7 +53,7 @@ async function pagination(event) {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://3.109.64.14:3000/user-expense/${page}/${rowsToDisplay}`,
+      `http://localhost:3000/user-expense/${page}/${rowsToDisplay}`,
       {
         headers: { Authorization: token },
       }
@@ -78,7 +78,7 @@ async function displayData(page) {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://3.109.64.14:3000/user-expense/${page}/${rowsToDisplay}`,
+      `http://localhost:3000/user-expense/${page}/${rowsToDisplay}`,
       {
         headers: { Authorization: token },
       }
@@ -126,7 +126,7 @@ async function postExpense(event) {
     if (form.dataset.mode === "edit") {
       await editExpense(form.dataset.itemId, details);
     } else if (form.dataset.mode === "post" || form.dataset.mode === "") {
-      await axios.post("http://3.109.64.14:3000/user-expense", details, {
+      await axios.post(`http://localhost:3000/user-expense`, details, {
         headers: {
           Authorization: token,
         },
@@ -145,7 +145,7 @@ async function editExpense(itemId, details) {
   const token = localStorage.getItem("token");
   try {
     await axios.patch(
-      `http://3.109.64.14:3000/user-expense/edit/${itemId}`,
+      `http://localhost:3000/user-expense/edit/${itemId}`,
       details,
       {
         headers: {
@@ -167,14 +167,11 @@ async function editExpense(itemId, details) {
 async function deleteItem(itemId) {
   const token = localStorage.getItem("token");
   try {
-    await axios.delete(
-      `http://3.109.64.14:3000/user-expense/delete/${itemId}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+    await axios.delete(`http://localhost:3000/user-expense/delete/${itemId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
     detailItems.innerHTML = "";
     await displayData(currPage);
   } catch (error) {
@@ -204,7 +201,7 @@ async function editButtonClicked(itemId) {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.get(
-      `http://3.109.64.14:3000/user-expense/edit/${itemId}`,
+      `http://localhost:3000/user-expense/edit/${itemId}`,
       {
         headers: {
           Authorization: token,
@@ -230,6 +227,7 @@ function getItemId(parentRow) {
 
 // Display premium status
 function premium() {
+  premiumBtn_sm.style.display = "none";
   premiumBtn.style.display = "none";
   premiumText.style.display = "block";
   download.disabled = false;

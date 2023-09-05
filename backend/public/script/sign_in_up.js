@@ -56,7 +56,7 @@ async function postUserData1(event) {
   };
   try {
     const response = await axios.post(
-      "http://3.109.64.14:3000/user/logIn",
+      "http://localhost:3000/user/logIn",
       details
     );
     localStorage.setItem("token", response.data.token);
@@ -78,34 +78,48 @@ async function postUserData1(event) {
 // Handle signup form submission
 async function postUserData2(event) {
   event.preventDefault();
+
+  // Extract form input values
   const details = {
     username: username.value,
     email: email.value,
     password: password.value,
     confirm_password: confirm_password.value,
   };
+
   try {
+    // Send a POST request to the server to sign up the user
     const response = await axios.post(
-      "http://3.109.64.14:3000/user/signUp",
+      "http://localhost:3000/user/signUp",
       details
     );
+
+    // Reset the form and show a success popup
     form2.reset();
     popUp_success.style.display = "block";
+
+    // Redirect to the login page after a delay
     setTimeout(() => {
       window.location.href = "/user/login";
-    }, 2000);
+    }, 3000);
   } catch (err) {
-    console.log(err);
-    if (err.response && err.response.status === 400) {
-      popUp_password.style.display = "block";
-      setTimeout(() => {
-        popUp_password.style.display = "none";
-      }, 3000);
-    } else if (err.response && err.response.status === 409) {
-      popUp_email.style.display = "block";
-      setTimeout(() => {
-        popUp_email.style.display = "none";
-      }, 3000);
+    console.error(err); // Log any errors to the console
+
+    // Handle specific error responses from the server
+    if (err.response) {
+      if (err.response.status === 400) {
+        // Show a password-related error popup
+        popUp_password.style.display = "block";
+        setTimeout(() => {
+          popUp_password.style.display = "none";
+        }, 3000);
+      } else if (err.response.status === 409) {
+        // Show an email-related error popup
+        popUp_email.style.display = "block";
+        setTimeout(() => {
+          popUp_email.style.display = "none";
+        }, 3000);
+      }
     }
   }
 }

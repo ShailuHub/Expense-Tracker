@@ -8,6 +8,7 @@ const razorPay = new RazorPay({
 
 exports.purchaseMemberShip = async (req, res, next) => {
   try {
+    //create an order Id
     const razorPayOrder = await razorPay.orders.create({
       amount: 5000,
       currency: "INR",

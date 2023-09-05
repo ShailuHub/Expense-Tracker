@@ -11,7 +11,7 @@ async function displayData() {
   try {
     // Fetch data from the server
     const response = await axios.get(
-      "http://3.109.64.14:3000/premium/leaderboardList",
+      `http://localhost:3000/premium/leaderboardList`,
       {
         headers: { Authorization: token },
       }
@@ -28,7 +28,7 @@ async function displayData() {
       <div class="col-6 col-sm-6">${item.totalExpense}</div>
     </div>`;
       // Append the created list item to the main list
-      position.appendChild(listItem);
+      mainList.appendChild(listItem);
     });
   } catch (error) {
     // Log any errors

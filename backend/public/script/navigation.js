@@ -52,7 +52,7 @@ async function showLeaderBoard(event) {
   event.preventDefault();
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.get("http://3.109.64.14:3000/premium", {
+    const response = await axios.get(`http://localhost:3000/premium`, {
       headers: { Authorization: token },
     });
     if (response.data.success === "success") {
@@ -75,7 +75,7 @@ async function showHome(event) {
 async function showPremiumFeautes() {
   const token = localStorage.getItem("token");
   try {
-    const getResponse = await axios.get("http://3.109.64.14:3000/premium", {
+    const getResponse = await axios.get(`http://localhost:3000/premium`, {
       headers: { Authorization: token },
     });
     if (getResponse.data.success === "success") {
@@ -93,16 +93,19 @@ async function buyPremium(event) {
   event.preventDefault();
   const token = localStorage.getItem("token");
   try {
+    //Get the payment information from the server
     const getResponse = await axios.get(
-      "http://3.109.64.14:3000/purchase/membership",
+      `http://localhost:3000/purchase/membership`,
       { headers: { Authorization: token } }
     );
+
+    //Prepare options for the Razorpay payment
     const options = {
       key: getResponse.data.key_id,
       order_id: getResponse.data.order.orderId,
       handler: async function (responseFromRazorPay) {
         const postResponse = await axios.post(
-          "http://3.109.64.14:3000/purchase/updateTransactionstatus",
+          `http://localhost:3000/purchase/updateTransactionstatus`,
           {
             order_id: responseFromRazorPay.razorpay_order_id,
             payment_id: responseFromRazorPay.razorpay_payment_id,
@@ -111,22 +114,21 @@ async function buyPremium(event) {
         );
         if (postResponse.data.success === "success") {
           premium();
-          premium_sm();
         }
         alert("You are a Premium User Now");
         window.location.href = "/expense/addexpense";
       },
     };
+
+    //Initialize Razorpay and open the payment window
     const payToRazorPay = new Razorpay(options);
     payToRazorPay.open();
+
+    //Handle payment failure
     payToRazorPay.on("payment.failed", (response) => {
       alert("Something went wrong");
     });
   } catch (error) {
     console.log(error);
   }
-}
-
-function premium_sm() {
-  premiumBtn_sm.style.display = "none";
 }

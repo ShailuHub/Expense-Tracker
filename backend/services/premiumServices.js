@@ -11,7 +11,7 @@ exports.uploadToS3 = (data, filename) => {
     secretAccessKey: iAmUserSecretKey,
   });
 
-  //create parameters object to cnnect with which bucket file name to save
+  //create parameters object to connect with which bucket file name to save
   const params = {
     Bucket: bucketName,
     Key: filename,

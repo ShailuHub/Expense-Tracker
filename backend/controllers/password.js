@@ -110,7 +110,7 @@ exports.postForgotPassword = async (req, res, next) => {
       from: "shailesh.respond@gmail.com",
       to: email,
       subject: "Reset Password",
-      html: `<p>Click the link to reset password <a href="http://3.109.64.14:3000/password/resetpassword/${findUser.id}">Reset Password</a></p>`,
+      html: `<p>Click the link to reset password <a href="http://localhost:3000/password/resetpassword/${findUser.id}">Reset Password</a></p>`,
     };
 
     // Send the email
