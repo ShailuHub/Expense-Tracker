@@ -1,34 +1,47 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../utils/database");
-
-const User = sequelize.define("user", {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true,
-  },
+const mongoose = require("mongoose");
+const Download = require("../models/download.js");
+const userSchema = new mongoose.Schema({
   username: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   email: {
-    type: Sequelize.STRING,
+    type: String,
     unique: true,
-    allowNull: false,
+    required: true,
   },
   password: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   isPremium: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
+    type: Boolean,
+    default: false,
   },
   totalExpense: {
-    type: Sequelize.DECIMAL(10, 2),
-    defaultValue: 0.0,
+    type: mongoose.Schema.Types.Decimal128,
+    default: 0.0,
+  },
+  expenses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Expense", // Reference the 'Expense' model
+    },
+  ],
+  downloads: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Download",
+    },
+  ],
+  orders: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Order",
+  },
+  passwords: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Password",
   },
 });
 
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);

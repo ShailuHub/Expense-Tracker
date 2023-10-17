@@ -10,8 +10,6 @@ form.addEventListener("submit", postResetPassword);
 async function postResetPassword(event) {
   // Retrieve userId from local storage
   const userId = localStorage.getItem("userId");
-  console.log(userId); // Display userId in console
-
   // Prevent default form submission behavior
   event.preventDefault();
 

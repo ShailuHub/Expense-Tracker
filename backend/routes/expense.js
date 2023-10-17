@@ -10,7 +10,7 @@ router.get(
   expenseControllers.getExpensePage
 );
 
-// Route to get a single expense for editing with authentication
+//Route to get a single expense for editing with authentication
 router.get(
   "/user-expense/edit/:expenseId",
   userAuthentication.authenticate,

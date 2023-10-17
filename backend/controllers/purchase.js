@@ -7,17 +7,19 @@ const razorPay = new RazorPay({
 });
 
 exports.purchaseMemberShip = async (req, res, next) => {
+  const userId = req.user._id;
   try {
     //create an order Id
     const razorPayOrder = await razorPay.orders.create({
       amount: 5000,
       currency: "INR",
     });
-    const order = await req.user.createOrder({
+    const order = new Order({
       orderId: razorPayOrder.id,
       status: "PENDING",
+      userId: userId,
     });
-
+    await order.save();
     res.status(201).json({
       order,
       key_id: razorPay.key_id,
@@ -29,16 +31,15 @@ exports.purchaseMemberShip = async (req, res, next) => {
 
 exports.purchaseStatus = async (req, res, next) => {
   const { order_id, payment_id } = req.body;
+  const userId = req.user._id;
   try {
     if (payment_id) {
-      const order = await Order.findOne({ where: { userId: req.user.id } });
-      order.status = "DONE";
-      order.paymentId = payment_id;
-      order.orderId = order_id;
-      await order.save();
-      const user = await User.findOne({ where: { id: req.user.id } });
-      user.isPremium = true;
-      await user.save();
+      await Order.findByIdAndUpdate(userId, {
+        status: "DONE",
+        paymentId: payment_id,
+        orderId: order_id,
+      });
+      await User.findByIdAndUpdate(userId, { isPremium: true });
     }
     res
       .status(201)

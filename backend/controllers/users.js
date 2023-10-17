@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const absolutePath = require("../utils/path");
 const Password = require("../models/forgotPassword");
-const sequelize = require("../utils/database");
+// const sequelize = require("../utils/database");
 
 const saltRounds = 10;
 
@@ -15,17 +15,11 @@ exports.postUser = async (req, res, next) => {
   const trimmedUsername = username.trim().toLowerCase();
   const trimmedEmail = email.trim().toLowerCase();
 
-  //Initialise transaction
-  const t = await sequelize.transaction();
-
   //check for password and confirm password
   if (password === confirm_password) {
     try {
       //find any email exists
-      const isEmailUsed = await User.findOne({
-        where: { email: trimmedEmail },
-        transaction: t,
-      });
+      const isEmailUsed = await User.findOne({ email: trimmedEmail });
 
       //if email exists
       if (isEmailUsed) {
@@ -38,32 +32,19 @@ exports.postUser = async (req, res, next) => {
       //try to save it in database
       try {
         //store details in user table
-        const user = await User.create(
-          {
-            username: trimmedUsername,
-            email: trimmedEmail,
-            password: hashPassword,
-          },
-          { transaction: t }
-        );
-
-        //store the users password
-        await Password.create(
-          {
-            userId: user.id,
-          },
-          { transaction: t }
-        );
-        await t.commit();
+        const newUser = new User({
+          username: trimmedUsername,
+          email: trimmedEmail,
+          password: hashPassword,
+        });
+        await newUser.save();
         return res.status(201).json({ message: "User created successfully" });
       } catch (error) {
         console.error(error);
-        await t.rollback();
         return res.status(500).json({ message: "Internal server error" });
       }
     } catch (error) {
       console.error(error);
-      await t.rollback();
       return res.status(500).json({ message: "Internal server error" });
     }
   } else {
@@ -71,32 +52,30 @@ exports.postUser = async (req, res, next) => {
   }
 };
 
-//Posting data to the database to check for login in purpose
 exports.postCredential = async (req, res, next) => {
   //get the details
   const { email, password } = req.body;
   const trimmedEmail = email.trim().toLowerCase();
   try {
-    const isEmail = await User.findOne({ where: { email: trimmedEmail } });
-    if (!isEmail) res.status(404).send({ message: "User doesn't exists!!" });
-    else {
-      const isMatch = await bcrypt.compare(password, isEmail.password);
-      //if email exits and password matched create a token for that user and allow to enter in app
-      if (isMatch) {
-        //creation of token
-        const createToken = await jwt.sign(
-          { id: isEmail.id, email: isEmail.email, isPremium: null },
-          process.env.secretKey,
-          { expiresIn: "1h" }
-        );
-        res.status(201).json({
-          success: "success",
-          message: "User has suceesfully logged in",
-          token: createToken,
-        });
-      } else {
-        res.status(404).send({ message: "User doesn't exists!!" });
-      }
+    const user = await User.findOne({ email: trimmedEmail });
+    if (!user)
+      return res.status(404).send({ message: "User doesn't exists!!" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    //if email exits and password matched create a token for that user and allow to enter in app
+    if (isMatch) {
+      //creation of token
+      const createToken = await jwt.sign(
+        { id: user._id, email: user.email, isPremium: null },
+        process.env.secretKey,
+        { expiresIn: "1h" }
+      );
+      res.status(201).json({
+        success: "success",
+        message: "User has suceesfully logged in",
+        token: createToken,
+      });
+    } else {
+      res.status(404).send({ message: "User doesn't exists!!" });
     }
   } catch (error) {
     res.status(500).send({ message: "Internal server error" });

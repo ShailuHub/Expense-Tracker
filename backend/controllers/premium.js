@@ -24,17 +24,21 @@ exports.getLeaderBoardPage = (req, res, next) => {
 // Get and send the leader board list (API endpoint)
 exports.getLeaderBoardList = async (req, res, next) => {
   try {
-    const leaderBoardList = await User.findAll({
-      attributes: ["username", "totalExpense"],
-      order: [["totalExpense", "DESC"]],
+    const leaderBoardList = await User.find(
+      {},
+      { username: 1, totalExpense: 1 }
+    )
+      .sort({ totalExpense: -1 })
+      .exec();
+    const modifiedLeaderBoardList = leaderBoardList.map((user, idx) => {
+      return {
+        username:
+          user.username.charAt(0).toUpperCase() + user.username.slice(1),
+        totalExpense: Number(user.totalExpense),
+        idx: idx + 1,
+      };
     });
-    leaderBoardList.map((item, idx) => {
-      item.dataValues.idx = idx + 1;
-      item.dataValues.username =
-        item.dataValues.username.charAt(0).toUpperCase() +
-        item.dataValues.username.slice(1);
-    });
-    res.status(201).json(leaderBoardList);
+    res.status(201).json(modifiedLeaderBoardList);
   } catch (error) {
     console.log(error);
   }
@@ -72,41 +76,47 @@ exports.postDate = async (req, res, next) => {
   });
 };
 
-// Get expense details based on search date/type (API endpoint)
 exports.getExpenseDetail = async (req, res, next) => {
   try {
     if (req.user.isPremium) {
-      const expenseDetail = await Expense.findAll({
-        where: {
-          userId: req.user.id,
-        },
-      });
-
-      // Get search parameters
       const searchType = req.params.searchType;
       const inputDate = new Date(req.params.date);
-      const expenseArray = [];
-      let totalSum = 0;
+      let dateFilter = {};
+      if (searchType === "date") {
+        dateFilter = {
+          createdAt: {
+            $gte: new Date(
+              inputDate.getFullYear(),
+              inputDate.getMonth(),
+              inputDate.getDate()
+            ),
+            $lt: new Date(
+              inputDate.getFullYear(),
+              inputDate.getMonth(),
+              inputDate.getDate() + 1
+            ),
+          },
+        };
+      } else if (searchType === "month") {
+        dateFilter = {
+          createdAt: {
+            $gte: new Date(inputDate.getFullYear(), inputDate.getMonth(), 1),
+            $lt: new Date(inputDate.getFullYear(), inputDate.getMonth() + 1, 1),
+          },
+        };
+      }
 
-      // Filter expenses based on search criteria
-      expenseDetail.forEach((expense) => {
-        const createdDate = new Date(expense.createdAt);
-        if (
-          (searchType === "date" &&
-            createdDate.getDate() === inputDate.getDate() &&
-            createdDate.getMonth() + 1 === inputDate.getMonth() + 1 &&
-            createdDate.getFullYear() === inputDate.getFullYear()) ||
-          (searchType === "month" &&
-            createdDate.getMonth() + 1 === inputDate.getMonth() + 1 &&
-            createdDate.getFullYear() === inputDate.getFullYear())
-        ) {
-          expenseArray.push(expense);
-          totalSum += expense.amount;
-        }
+      const expenseDetail = await Expense.find({
+        userId: req.user.id,
+        ...dateFilter,
       });
 
-      if (expenseArray.length > 0) {
-        res.send({ success: "success", expenseArray, totalSum });
+      if (expenseDetail.length > 0) {
+        const totalSum = expenseDetail.reduce(
+          (total, expense) => total + expense.amount,
+          0
+        );
+        res.send({ success: "success", expenseArray: expenseDetail, totalSum });
       } else {
         res.send({
           success: "failed",
@@ -121,18 +131,21 @@ exports.getExpenseDetail = async (req, res, next) => {
 };
 
 exports.downloadExpense = async (req, res, next) => {
+  const userId = req.user._id;
+  const username = req.user.username;
   try {
-    const expenses = await req.user.getExpenses();
+    const expenses = await Expense.find(userId);
     const stringifyExpenses = JSON.stringify(expenses);
-    const fileName = `expense-${req.user.id}/${new Date()}.txt`;
+    const fileName = `expense-${username}/${new Date()}.txt`;
     const fileUrl = await premiumServices.uploadToS3(
       stringifyExpenses,
       fileName
     );
-    await Download.create({
+    const download = new Download({
       file: fileUrl,
-      userId: req.user.id,
+      userId: userId,
     });
+    await download.save();
     await res.status(200).json({ fileUrl, success: "success" });
   } catch (error) {
     res
@@ -142,10 +155,14 @@ exports.downloadExpense = async (req, res, next) => {
 };
 
 exports.getDownloadUrl = async (req, res, next) => {
+  const userId = req.user._id;
   try {
-    const downloadURL = await req.user.getDownloads();
-    const fileName = `Expense-File-${downloadURL.length}`;
-    res.status(200).json({ downloadURL, fileName, success: "success" });
+    const downloadRecords = await Download.find(userId);
+    // Construct a list of download URLs
+    const downloadURLs = downloadRecords.map((record) => record.file);
+
+    const fileName = `Expense-File-${downloadURLs.length}`;
+    res.status(200).json({ downloadURLs, fileName, success: "success" });
   } catch (error) {
     console.log(error);
     res

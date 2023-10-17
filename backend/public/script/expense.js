@@ -59,13 +59,14 @@ async function pagination(event) {
       }
     );
     const { expenses, totalPages, isPremium } = response.data;
-
     if (isPremium && isFirstTime) {
       premium();
     }
+    console.log(expenses);
     detailItems.innerHTML = "";
     expenses.forEach((item) => {
       display(item);
+      console.log(item);
     });
     currPage = page; // Update current page
   } catch (error) {
@@ -237,7 +238,7 @@ function premium() {
 // Display expense data in a row
 function display(data) {
   const listItem = document.createElement("tr");
-  listItem.dataset.id = data.id;
+  listItem.dataset.id = data._id;
   listItem.innerHTML = `
     <td class="col-2 text-center">${data.createdAt.toString().slice(0, 10)}</td>
     <td class="col-4 text-center">${data.category}</td>
